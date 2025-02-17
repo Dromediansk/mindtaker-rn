@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "rnotes",
-    "slug": "rnotes",
+    "name": "mindtaker",
+    "slug": "mindtaker",
+    "scheme": "mindtaker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,16 +14,33 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.dromediansk.mindtaker"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.dromediansk.mindtaker"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.243209097004-43t6pqdao3m7iqo9netcuc1mgbv2h641"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "c3a76208-447f-4c87-94b5-b3c6447a34f1"
+      }
+    },
+    "owner": "dromediansk"
   }
 }
