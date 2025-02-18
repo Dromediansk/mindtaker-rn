@@ -7,8 +7,6 @@ const initialDate = dayjs().format("YYYY-MM-DD");
 const HomeTab = () => {
   const [selectedDate, setSelectedDate] = useState(initialDate);
 
-  console.log("selectedDate", selectedDate);
-
   const handleDateChange = (date: DateData) => {
     setSelectedDate(date.dateString);
   };

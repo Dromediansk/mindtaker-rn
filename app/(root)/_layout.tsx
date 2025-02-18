@@ -1,7 +1,14 @@
 import React from "react";
 import { Redirect } from "expo-router";
-import { setUser, useUserStore } from "@/store/user.store";
-import { ActivityIndicator, Pressable, View, Text } from "react-native";
+import { useAuthStore } from "@/store/auth.store";
+import {
+  ActivityIndicator,
+  Pressable,
+  View,
+  Text,
+  Image,
+  Platform,
+} from "react-native";
 import { Drawer } from "expo-router/drawer";
 import {
   DrawerContentComponentProps,
@@ -11,7 +18,24 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
 
+const boxShadow =
+  Platform.OS === "ios"
+    ? {
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+      }
+    : {
+        elevation: 5,
+      };
+
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
+  const { setUser } = useAuthStore();
+
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -38,14 +62,18 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
 };
 
 const AppLayout = () => {
-  const { loading, user } = useUserStore();
+  const { authLoading, user } = useAuthStore();
 
-  if (loading) {
-    return <ActivityIndicator className="text-primary-300" size="large" />;
+  if (authLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator className="text-primary-300" size="large" />
+      </View>
+    );
   }
 
   if (!user) {
-    return <Redirect href="/sign-in" />;
+    return <Redirect href="/auth" />;
   }
 
   return (
@@ -58,12 +86,41 @@ const AppLayout = () => {
             headerTitle: "",
             headerLeft: () => (
               <Pressable onPress={() => navigation.openDrawer()}>
-                <MaterialIcons name="menu" size={28} />
+                {user?.avatarUrl ? (
+                  <Image
+                    source={{ uri: user.avatarUrl }}
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: 18,
+                    }}
+                  />
+                ) : (
+                  <View
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 18,
+                      backgroundColor: "#E5E7EB",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                      {user?.name?.[0]?.toUpperCase() || "U"}
+                    </Text>
+                  </View>
+                )}
               </Pressable>
             ),
             headerLeftContainerStyle: {
               paddingLeft: 16,
               paddingRight: 16,
+            },
+            headerStyle: {
+              ...boxShadow,
+              borderBottomWidth: 1,
+              borderBottomColor: "#E5E7EB",
             },
           })}
         />
