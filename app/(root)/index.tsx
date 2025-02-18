@@ -30,7 +30,6 @@ const HomeTab = () => {
       horizontal
       pagingEnabled
       enableSwipeMonths
-      showSixWeeks
       onDayPress={handleDateChange}
     />
   );
