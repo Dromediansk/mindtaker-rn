@@ -56,7 +56,7 @@ const GoogleSignIn = () => {
   return (
     <GoogleSigninButton
       size={GoogleSigninButton.Size.Wide}
-      color={GoogleSigninButton.Color.Light}
+      color={GoogleSigninButton.Color.Dark}
       onPress={handleSignIn}
       disabled={authLoading}
     />

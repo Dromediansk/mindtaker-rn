@@ -1,4 +1,3 @@
-import { Stack } from "expo-router";
 import React from "react";
 import { Redirect } from "expo-router";
 import { useAuthStore } from "@/store/auth.store";
@@ -10,32 +9,16 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { MaterialIcons } from "@expo/vector-icons";
+import SignOutButton from "@/components/SignOutButton";
 
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
-  const { setUser } = useAuthStore();
-
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
 
-      <Pressable
-        onPress={() => setUser(null)}
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          padding: 24,
-          marginLeft: 8,
-          borderTopWidth: 1,
-          borderTopColor: "#E5E7EB",
-          gap: 8,
-        }}
-      >
-        <MaterialIcons name="logout" size={24} color="#FF4444" />
-        <Text style={{ color: "#FF4444" }}>Sign Out</Text>
-      </Pressable>
+      <SignOutButton />
     </View>
   );
 };

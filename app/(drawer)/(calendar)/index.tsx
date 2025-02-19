@@ -2,7 +2,7 @@ import IdeaItem from "@/components/IdeaItem";
 import { ideaItemsMock } from "@/utils/mocks";
 import dayjs from "dayjs";
 import React, { useState } from "react";
-import { View, Text, SectionList, Pressable, Modal } from "react-native";
+import { View, Text, SectionList, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import {
   CalendarProvider,
@@ -40,6 +40,7 @@ const Calendar = () => {
         <Pressable
           className="absolute bottom-6 right-6 bg-main w-14 h-14 rounded-full items-center justify-center shadow-lg"
           onPress={() => router.navigate("new-idea")}
+          hitSlop={15}
         >
           <Ionicons name="add" size={30} color="white" />
         </Pressable>
