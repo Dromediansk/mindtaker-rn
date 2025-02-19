@@ -1,14 +1,7 @@
 import React from "react";
 import { Redirect } from "expo-router";
 import { useAuthStore } from "@/store/auth.store";
-import {
-  ActivityIndicator,
-  Pressable,
-  View,
-  Text,
-  Image,
-  Platform,
-} from "react-native";
+import { ActivityIndicator, Pressable, View, Text, Image } from "react-native";
 import { Drawer } from "expo-router/drawer";
 import {
   DrawerContentComponentProps,
@@ -17,21 +10,6 @@ import {
 } from "@react-navigation/drawer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
-
-const boxShadow =
-  Platform.OS === "ios"
-    ? {
-        shadowColor: "#000",
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-      }
-    : {
-        elevation: 5,
-      };
 
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const { setUser } = useAuthStore();
@@ -116,11 +94,6 @@ const AppLayout = () => {
             headerLeftContainerStyle: {
               paddingLeft: 16,
               paddingRight: 16,
-            },
-            headerStyle: {
-              ...boxShadow,
-              borderBottomWidth: 1,
-              borderBottomColor: "#E5E7EB",
             },
           })}
         />
