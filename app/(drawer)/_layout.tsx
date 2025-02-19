@@ -1,3 +1,4 @@
+import { Stack } from "expo-router";
 import React from "react";
 import { Redirect } from "expo-router";
 import { useAuthStore } from "@/store/auth.store";
@@ -39,7 +40,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   );
 };
 
-const AppLayout = () => {
+const DrawerLayout = () => {
   const { authLoading, user } = useAuthStore();
 
   if (authLoading) {
@@ -58,9 +59,9 @@ const AppLayout = () => {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
         <Drawer.Screen
-          name="index"
+          name="(calendar)"
           options={({ navigation }) => ({
-            drawerLabel: "Home",
+            drawerLabel: "Calendar",
             headerTitle: "",
             headerLeft: () => (
               <Pressable onPress={() => navigation.openDrawer()}>
@@ -102,4 +103,4 @@ const AppLayout = () => {
   );
 };
 
-export default AppLayout;
+export default DrawerLayout;

@@ -18,5 +18,4 @@ interface Idea {
   createdAt: string;
   modifiedAt: string;
   user: User;
-  category: Category;
 }
