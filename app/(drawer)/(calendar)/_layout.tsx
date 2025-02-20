@@ -8,7 +8,6 @@ const CalendarLayout = () => {
       <Stack.Screen
         name="new-idea"
         options={{
-          presentation: "modal",
           title: "New Idea",
           animation: "slide_from_bottom",
         }}

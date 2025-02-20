@@ -1,7 +1,7 @@
 import IdeaItem from "@/components/IdeaItem";
 import { ideaItemsMock } from "@/utils/mocks";
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View, Text, SectionList, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import {
@@ -20,6 +20,11 @@ const Calendar = () => {
     setSelectedDate(date.dateString);
   };
 
+  const renderItem = useCallback(
+    ({ item }: { item: Idea }) => <IdeaItem item={item} />,
+    []
+  );
+
   return (
     <CalendarProvider date={selectedDate} showTodayButton>
       <ExpandableCalendar
@@ -30,7 +35,7 @@ const Calendar = () => {
       <View className="flex-1">
         <SectionList
           sections={ideaItemsMock}
-          renderItem={({ item }) => <IdeaItem item={item} />}
+          renderItem={renderItem}
           renderSectionHeader={({ section: { category } }) => (
             <Text className="text-2xl px-4 pt-2 pb-1">{category.name}</Text>
           )}
