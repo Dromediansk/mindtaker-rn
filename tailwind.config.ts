@@ -14,7 +14,7 @@ const config: Config = {
         "main-lighter": COLORS.main_lighter,
       },
       fontFamily: {
-        workSans: ["Rubik-Regular", "sans-serif"],
+        workSans: ["WorkSans-Regular", "sans-serif"],
         "workSans-bold": ["WorkSans-Bold", "sans-serif"],
         "workSans-semibold": ["WorkSans-SemiBold", "sans-serif"],
         "workSans-light": ["WorkSans-Light", "sans-serif"],

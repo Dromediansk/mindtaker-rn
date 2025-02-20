@@ -2,7 +2,7 @@ import IdeaItem from "@/components/IdeaItem";
 import { ideaItemsMock } from "@/utils/mocks";
 import dayjs from "dayjs";
 import React, { useCallback, useState } from "react";
-import { View, Text, SectionList, Pressable } from "react-native";
+import { View, SectionList, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import {
   CalendarProvider,
@@ -10,6 +10,7 @@ import {
   ExpandableCalendar,
 } from "react-native-calendars";
 import { router } from "expo-router";
+import { StyledText } from "@/components/StyledText";
 
 const initialDate = dayjs().format("YYYY-MM-DD");
 
@@ -37,7 +38,9 @@ const Calendar = () => {
           sections={ideaItemsMock}
           renderItem={renderItem}
           renderSectionHeader={({ section: { category } }) => (
-            <Text className="text-2xl px-4 pt-2 pb-1">{category.name}</Text>
+            <StyledText className="text-2xl px-4 pt-2 pb-1">
+              {category.name}
+            </StyledText>
           )}
           keyExtractor={(item) => item.id}
           contentContainerClassName="gap-2"

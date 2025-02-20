@@ -1,16 +1,21 @@
-import React, { FC } from "react";
-import { Text, View } from "react-native";
+import React from "react";
+import { Pressable } from "react-native";
+import { StyledText } from "./StyledText";
+import { router } from "expo-router";
 
 interface IdeaItemProps {
   item: Idea;
 }
 
-const IdeaItem: FC<IdeaItemProps> = ({ item }) => {
+const IdeaItem = ({ item }: IdeaItemProps) => {
   return (
-    <View className="bg-white p-5">
-      <Text className="text-2xl">{item.title}</Text>
-      <Text>{item.description}</Text>
-    </View>
+    <Pressable
+      className="bg-white p-4 mx-4 rounded-lg"
+      onPress={() => router.push(`/${item.id}`)}
+    >
+      <StyledText className="text-lg">{item.title}</StyledText>
+      <StyledText numberOfLines={2}>{item.description}</StyledText>
+    </Pressable>
   );
 };
 
