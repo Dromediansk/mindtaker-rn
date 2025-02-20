@@ -15,7 +15,10 @@ cssInterop(LinearGradient, {
 const Auth = () => {
   return (
     <View className="flex-1 items-center justify-around bg-white pt-16">
-      <MindtakerImage size={250} source={require("@/assets/thoughts.png")} />
+      <MindtakerImage
+        size={250}
+        source={require("@/assets/images/thoughts.png")}
+      />
       <LinearGradient
         colors={[
           COLORS.white,
@@ -27,9 +30,11 @@ const Auth = () => {
         end={{ x: 0.6, y: 0.85 }}
         className="flex-1 w-full justify-around items-center"
       >
-        <View className="flex items-center">
-          <Text className="text-3xl uppercase">Mindtaker</Text>
-          <Text className="text-xl py-5">
+        <View className="flex justify-center items-center">
+          <Text className="text-4xl uppercase font-workSans-semibold pb-4">
+            Mindtaker
+          </Text>
+          <Text className="text-2xl font-workSans-light">
             Your thoughts in an organized way
           </Text>
         </View>

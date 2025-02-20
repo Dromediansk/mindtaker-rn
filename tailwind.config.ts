@@ -13,6 +13,12 @@ const config: Config = {
         "main-light": COLORS.main_light,
         "main-lighter": COLORS.main_lighter,
       },
+      fontFamily: {
+        workSans: ["Rubik-Regular", "sans-serif"],
+        "workSans-bold": ["WorkSans-Bold", "sans-serif"],
+        "workSans-semibold": ["WorkSans-SemiBold", "sans-serif"],
+        "workSans-light": ["WorkSans-Light", "sans-serif"],
+      },
     },
   },
   plugins: [],
