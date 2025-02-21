@@ -12,7 +12,7 @@ cssInterop(LinearGradient, {
   },
 });
 
-const Auth = () => {
+const AuthScreen = () => {
   return (
     <View className="flex-1 items-center justify-around bg-white pt-16">
       <MindtakerImage
@@ -45,4 +45,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default AuthScreen;

@@ -6,15 +6,17 @@ const CalendarLayout = () => {
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen
-        name="new-idea"
+        name="ideas/new"
         options={{
           title: "New Idea",
           animation: "slide_from_bottom",
+          headerBackButtonDisplayMode: "minimal",
         }}
       />
       <Stack.Screen
-        name="[id]"
+        name="ideas/[id]"
         options={{
+          presentation: "modal",
           animation: "slide_from_right",
         }}
       />

@@ -1,7 +1,7 @@
 import IdeaItem from "@/components/IdeaItem";
 import { ideaItemsMock } from "@/utils/mocks";
 import dayjs from "dayjs";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { View, SectionList, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import {
@@ -9,13 +9,30 @@ import {
   DateData,
   ExpandableCalendar,
 } from "react-native-calendars";
-import { router } from "expo-router";
+import { Link } from "expo-router";
 import { StyledText } from "@/components/StyledText";
+import { getCategoriesFromDb } from "@/utils/supabase";
+import { useIdeaStore } from "@/store/idea.store";
+import { Idea } from "@/utils/types";
 
 const initialDate = dayjs().format("YYYY-MM-DD");
 
-const Calendar = () => {
+const IdeasScreen = () => {
   const [selectedDate, setSelectedDate] = useState(initialDate);
+  const { setCategories } = useIdeaStore();
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const categoriesData = await getCategoriesFromDb();
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error("Error loading categories:", error);
+      }
+    };
+
+    loadCategories();
+  }, []);
 
   const handleDateChange = (date: DateData) => {
     setSelectedDate(date.dateString);
@@ -45,16 +62,17 @@ const Calendar = () => {
           keyExtractor={(item) => item.id}
           contentContainerClassName="gap-2"
         />
-        <Pressable
-          className="absolute bottom-6 right-6 bg-main w-14 h-14 rounded-full items-center justify-center shadow-lg"
-          onPress={() => router.navigate("new-idea")}
-          hitSlop={15}
-        >
-          <Ionicons name="add" size={30} color="white" />
-        </Pressable>
+        <Link asChild href="/ideas/new">
+          <Pressable
+            className="absolute bottom-6 right-6 bg-main w-14 h-14 rounded-full items-center justify-center shadow-lg"
+            hitSlop={15}
+          >
+            <Ionicons name="add" size={30} color="white" />
+          </Pressable>
+        </Link>
       </View>
     </CalendarProvider>
   );
 };
 
-export default Calendar;
+export default IdeasScreen;
