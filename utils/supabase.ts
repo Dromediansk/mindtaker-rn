@@ -15,10 +15,17 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   },
 });
 
-export const createIdea = async (
-  title: string,
-  description: string
-): Promise<Tables<"ideas">[]> => {
+type CreateIdeaParams = {
+  title: string;
+  description: string;
+  categoryId: string;
+};
+
+export const createIdea = async ({
+  title,
+  description,
+  categoryId,
+}: CreateIdeaParams): Promise<Tables<"ideas">[]> => {
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -30,6 +37,7 @@ export const createIdea = async (
       {
         title,
         description,
+        category_id: categoryId,
         user_id: user.id,
       },
     ])

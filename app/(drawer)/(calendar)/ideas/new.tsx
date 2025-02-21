@@ -4,21 +4,35 @@ import { StyledText } from "@/components/StyledText";
 import StyledTextInput from "@/components/StyledTextInput";
 import { createIdea } from "@/utils/supabase";
 import { router } from "expo-router";
+import { Picker } from "@react-native-picker/picker";
+import { Category } from "@/utils/types";
+import { useIdeaStore } from "@/store/idea.store";
+import { cssInterop } from "nativewind";
+
+cssInterop(Picker, {
+  className: {
+    target: "style",
+  },
+});
 
 const NewScreen = () => {
-  const [titleContent, setTitleContent] = useState("");
+  const { categories } = useIdeaStore();
+
+  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCreate = async () => {
-    if (!titleContent.trim() && !description.trim()) {
+    if (!title.trim() && !description.trim()) {
       Alert.alert("Missing data", "Please fill in title or description");
       return;
     }
 
     setIsLoading(true);
     try {
-      await createIdea(titleContent, description);
+      await createIdea({ title, description, categoryId });
       router.back();
     } catch (error) {
       console.error(error);
@@ -36,8 +50,8 @@ const NewScreen = () => {
     <View className="flex-1 bg-white">
       <View className="px-4 pt-2 pb-2">
         <StyledTextInput
-          value={titleContent}
-          onChangeText={setTitleContent}
+          value={title}
+          onChangeText={setTitle}
           placeholder="Title"
         />
       </View>
@@ -50,6 +64,22 @@ const NewScreen = () => {
           multiline
           textAlignVertical="top"
         />
+      </View>
+      <View className="px-4 pt-2 pb-2">
+        <Picker
+          className="bg-gray-100 text-xl p-2 rounded-lg border-2 border-white focus:border-main-dark"
+          selectedValue={categoryId}
+          onValueChange={setCategoryId}
+        >
+          <Picker.Item label="No category" value="none" />
+          {categories.map((category: Category) => (
+            <Picker.Item
+              key={category.id}
+              label={category.name}
+              value={category.id}
+            />
+          ))}
+        </Picker>
       </View>
       <View className="mb-10 flex items-center">
         <Pressable
