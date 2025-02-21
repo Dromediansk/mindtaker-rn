@@ -11,9 +11,9 @@ import {
 } from "react-native-calendars";
 import { Link } from "expo-router";
 import { StyledText } from "@/components/StyledText";
-import { getCategoriesFromDb } from "@/utils/supabase";
 import { useIdeaStore } from "@/store/idea.store";
 import { Idea } from "@/utils/types";
+import { getCategoriesFromDb } from "@/utils/queries/category.query";
 
 const initialDate = dayjs().format("YYYY-MM-DD");
 

@@ -2,12 +2,12 @@ import { Pressable, View, Alert } from "react-native";
 import React, { useState } from "react";
 import { StyledText } from "@/components/StyledText";
 import StyledTextInput from "@/components/StyledTextInput";
-import { createIdea } from "@/utils/supabase";
 import { router } from "expo-router";
 import { Picker } from "@react-native-picker/picker";
 import { Category } from "@/utils/types";
 import { useIdeaStore } from "@/store/idea.store";
 import { cssInterop } from "nativewind";
+import { createIdeaToDb } from "@/utils/queries/idea.query";
 
 cssInterop(Picker, {
   className: {
@@ -20,7 +20,7 @@ const NewScreen = () => {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryId, setCategoryId] = useState<string | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,7 +32,7 @@ const NewScreen = () => {
 
     setIsLoading(true);
     try {
-      await createIdea({ title, description, categoryId });
+      await createIdeaToDb({ title, description, categoryId });
       router.back();
     } catch (error) {
       console.error(error);
@@ -53,6 +53,7 @@ const NewScreen = () => {
           value={title}
           onChangeText={setTitle}
           placeholder="Title"
+          className="h-20"
         />
       </View>
       <View className="px-4 pt-2 pb-2 flex-1">
@@ -70,6 +71,7 @@ const NewScreen = () => {
           className="bg-gray-100 text-xl p-2 rounded-lg border-2 border-white focus:border-main-dark"
           selectedValue={categoryId}
           onValueChange={setCategoryId}
+          prompt="Select a category"
         >
           <Picker.Item label="No category" value="none" />
           {categories.map((category: Category) => (
