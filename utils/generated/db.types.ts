@@ -12,14 +12,17 @@ export type Database = {
       categories: {
         Row: {
           id: string
+          is_category_none: boolean
           name: string
         }
         Insert: {
           id?: string
+          is_category_none: boolean
           name: string
         }
         Update: {
           id?: string
+          is_category_none?: boolean
           name?: string
         }
         Relationships: []

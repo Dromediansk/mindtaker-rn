@@ -46,15 +46,22 @@ const IdeasScreen = () => {
 
   const sections = useMemo(() => {
     return Object.values(categoryMap).reduce<Section[]>((acc, category) => {
+      console.log("category", category);
       if (category.ideas && category.ideas.length > 0) {
         acc.push({
-          category: { id: category.id, name: category.name },
+          category: {
+            id: category.id,
+            name: category.name,
+            is_category_none: category.is_category_none,
+          },
           data: category.ideas,
         });
       }
       return acc;
     }, []);
   }, [categoryMap]);
+
+  console.log("sections", sections);
 
   const handleDateChange = useCallback((date: DateData) => {
     setSelectedDate(date.dateString);

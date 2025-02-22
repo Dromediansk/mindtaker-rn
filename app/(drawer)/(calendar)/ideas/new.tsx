@@ -15,11 +15,11 @@ cssInterop(Picker, {
 });
 
 const NewScreen = () => {
-  const { categoryMap } = useCategoryStore();
+  const { categoryMap, emptyCategory } = useCategoryStore();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryId, setCategoryId] = useState(emptyCategory.id);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -72,9 +72,9 @@ const NewScreen = () => {
           onValueChange={setCategoryId}
           prompt="Select a category"
         >
-          <Picker.Item key="no-category" label="No category" value="" />
+          <Picker.Item label={emptyCategory.name} value={emptyCategory.id} />
           {Object.values(categoryMap).reduce<ReactNode[]>((items, category) => {
-            if (category.name !== "No category") {
+            if (category.id !== emptyCategory.id) {
               items.push(
                 <Picker.Item
                   key={category.id}

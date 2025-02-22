@@ -8,7 +8,8 @@ export const getCategoriesFromDb = resolveWithAuth(async (user: User) => {
     .from("categories")
     .select(
       `id, 
-      name, 
+      name,
+      is_category_none, 
       ideas: ideas (id, title, description, created_at, category_id)`
     )
     .eq("ideas.user_id", user.id)
