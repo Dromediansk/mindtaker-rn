@@ -15,11 +15,13 @@ const DetailScreen = () => {
   const ideas = getIdeasByCategory(categoryId);
   const idea = ideas.find((idea) => idea.id === id);
 
-  if (!idea) return null;
-
   useEffect(() => {
-    navigation.setOptions({ title: idea.title });
+    if (idea) {
+      navigation.setOptions({ title: idea.title });
+    }
   }, [idea, navigation]);
+
+  if (!idea) return null;
 
   return (
     <View className="flex-1 p-4">

@@ -8,14 +8,17 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "prebuild": "expo prebuild --clean",
-    "db:generate": "npx supabase gen types typescript --project-id \"quacvzutxuztggfiswri\" --schema public > utils/generated/db.types.ts"
+    "db:generate": "npx supabase gen types typescript --project-id \"quacvzutxuztggfiswri\" --schema public > utils/generated/db.types.ts",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-google-signin/google-signin": "^13.2.0",
+    "@react-native-picker/picker": "2.9.0",
     "@react-navigation/drawer": "^7.1.1",
     "@supabase/supabase-js": "^2.48.1",
     "dayjs": "^1.11.13",
+    "eslint-plugin-react-native": "^5.0.0",
     "expo": "~52.0.36",
     "expo-constants": "~17.0.7",
     "expo-dev-client": "~5.0.12",
@@ -34,12 +37,16 @@
     "react-native-screens": "~4.4.0",
     "react-native-url-polyfill": "^2.0.0",
     "tailwindcss": "^3.4.17",
-    "zustand": "^5.0.3",
-    "@react-native-picker/picker": "2.9.0"
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/react": "~18.3.12",
+    "eslint": "^8.57.0",
+    "eslint-config-expo": "~8.0.1",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "prettier": "^3.5.2",
     "typescript": "^5.3.3"
   },
   "private": true

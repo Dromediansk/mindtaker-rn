@@ -42,7 +42,7 @@ const IdeasScreen = () => {
     };
 
     loadInitialData();
-  }, [selectedDate]);
+  }, [selectedDate, setCategoriesToMap, setIdeasToCategory]);
 
   const sections = useMemo(() => {
     return Object.values(categoryMap).reduce<Section[]>((acc, category) => {
