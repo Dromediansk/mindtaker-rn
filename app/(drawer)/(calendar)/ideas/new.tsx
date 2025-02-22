@@ -5,9 +5,9 @@ import StyledTextInput from "@/components/StyledTextInput";
 import { router } from "expo-router";
 import { Picker } from "@react-native-picker/picker";
 import { Category } from "@/utils/types";
-import { useIdeaStore } from "@/store/idea.store";
+import { useIdeaStore } from "@/store/category.store";
 import { cssInterop } from "nativewind";
-import { createIdeaToDb } from "@/utils/queries/idea.query";
+import { createIdeaToDb } from "@/utils/queries";
 
 cssInterop(Picker, {
   className: {

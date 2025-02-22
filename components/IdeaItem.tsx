@@ -12,7 +12,9 @@ const IdeaItem = ({ item }: IdeaItemProps) => {
   return (
     <Pressable
       className="bg-white p-4 mx-4 rounded-lg"
-      onPress={() => router.push(`/ideas/${item.id}`)}
+      onPress={() =>
+        router.push(`/ideas/${item.id}?categoryId=${item.category_id}`)
+      }
     >
       <StyledText className="text-lg">{item.title}</StyledText>
       <StyledText numberOfLines={2}>{item.description}</StyledText>

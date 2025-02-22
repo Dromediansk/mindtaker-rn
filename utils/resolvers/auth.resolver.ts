@@ -2,7 +2,7 @@ import { supabase } from "../supabase";
 import { User } from "@supabase/supabase-js";
 
 export const resolveWithAuth = <T, R>(
-  handler: (user: User, data: T) => Promise<R>
+  handler: (user: User, data?: T) => Promise<R>
 ) => {
   return async (data: T): Promise<R> => {
     const {

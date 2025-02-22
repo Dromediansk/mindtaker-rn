@@ -1,7 +1,6 @@
 import IdeaItem from "@/components/IdeaItem";
-import { ideaItemsMock } from "@/utils/mocks";
 import dayjs from "dayjs";
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useMemo } from "react";
 import { View, SectionList, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import {
@@ -11,32 +10,44 @@ import {
 } from "react-native-calendars";
 import { Link } from "expo-router";
 import { StyledText } from "@/components/StyledText";
-import { useIdeaStore } from "@/store/idea.store";
+import { useCategoryStore } from "@/store/category.store";
 import { Idea } from "@/utils/types";
-import { getCategoriesFromDb } from "@/utils/queries/category.query";
+import { getCategoriesFromDb, getIdeasByDate } from "@/utils/queries";
 
 const initialDate = dayjs().format("YYYY-MM-DD");
 
 const IdeasScreen = () => {
   const [selectedDate, setSelectedDate] = useState(initialDate);
-  const { setCategories } = useIdeaStore();
+  const { categoryMap, setCategories, setIdeasToCategory } = useCategoryStore();
 
   useEffect(() => {
-    const loadCategories = async () => {
+    const loadInitialData = async () => {
       try {
-        const categoriesData = await getCategoriesFromDb();
+        const [categoriesData, ideasData] = await Promise.all([
+          getCategoriesFromDb(null),
+          getIdeasByDate(selectedDate),
+        ]);
+
         setCategories(categoriesData);
+        setIdeasToCategory(ideasData);
       } catch (error) {
-        console.error("Error loading categories:", error);
+        console.error("Error loading initial data:", error);
       }
     };
 
-    loadCategories();
+    loadInitialData();
   }, []);
 
-  const handleDateChange = (date: DateData) => {
+  const sections = useMemo(() => {
+    return Object.values(categoryMap).map((category) => ({
+      category,
+      data: category.ideas,
+    }));
+  }, [categoryMap]);
+
+  const handleDateChange = useCallback((date: DateData) => {
     setSelectedDate(date.dateString);
-  };
+  }, []);
 
   const renderItem = useCallback(
     ({ item }: { item: Idea }) => <IdeaItem item={item} />,
@@ -52,7 +63,7 @@ const IdeasScreen = () => {
       />
       <View className="flex-1">
         <SectionList
-          sections={ideaItemsMock}
+          sections={sections}
           renderItem={renderItem}
           renderSectionHeader={({ section: { category } }) => (
             <StyledText className="text-2xl px-4 pt-2 pb-1">

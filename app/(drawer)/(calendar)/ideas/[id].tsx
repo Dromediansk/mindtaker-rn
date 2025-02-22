@@ -1,16 +1,19 @@
 import { StyledText } from "@/components/StyledText";
-import { ideaItemsMock } from "@/utils/mocks";
+import { useCategoryStore } from "@/store/category.store";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import { View } from "react-native";
 
 const DetailScreen = () => {
-  const { id } = useLocalSearchParams();
+  const { id, categoryId } = useLocalSearchParams<{
+    id: string;
+    categoryId: string;
+  }>();
+  const { getIdeasByCategory } = useCategoryStore();
   const navigation = useNavigation();
 
-  const idea = ideaItemsMock
-    .flatMap((section) => section.data)
-    .find((item) => item.id === id);
+  const ideas = getIdeasByCategory(categoryId);
+  const idea = ideas.find((idea) => idea.id === id);
 
   if (!idea) return null;
 
