@@ -1,11 +1,10 @@
 import { Pressable, View, Alert } from "react-native";
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { StyledText } from "@/components/StyledText";
 import StyledTextInput from "@/components/StyledTextInput";
 import { router } from "expo-router";
 import { Picker } from "@react-native-picker/picker";
-import { Category } from "@/utils/types";
-import { useIdeaStore } from "@/store/category.store";
+import { useCategoryStore } from "@/store/category.store";
 import { cssInterop } from "nativewind";
 import { createIdeaToDb } from "@/utils/queries";
 
@@ -16,11 +15,11 @@ cssInterop(Picker, {
 });
 
 const NewScreen = () => {
-  const { categories } = useIdeaStore();
+  const { categoryMap } = useCategoryStore();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [categoryId, setCategoryId] = useState<string | null>(null);
+  const [categoryId, setCategoryId] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -73,14 +72,19 @@ const NewScreen = () => {
           onValueChange={setCategoryId}
           prompt="Select a category"
         >
-          <Picker.Item label="No category" value="none" />
-          {categories.map((category: Category) => (
-            <Picker.Item
-              key={category.id}
-              label={category.name}
-              value={category.id}
-            />
-          ))}
+          <Picker.Item key="no-category" label="No category" value="" />
+          {Object.values(categoryMap).reduce<ReactNode[]>((items, category) => {
+            if (category.name !== "No category") {
+              items.push(
+                <Picker.Item
+                  key={category.id}
+                  label={category.name}
+                  value={category.id}
+                />
+              );
+            }
+            return items;
+          }, [])}
         </Picker>
       </View>
       <View className="mb-10 flex items-center">

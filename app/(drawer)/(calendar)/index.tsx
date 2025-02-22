@@ -11,14 +11,20 @@ import {
 import { Link } from "expo-router";
 import { StyledText } from "@/components/StyledText";
 import { useCategoryStore } from "@/store/category.store";
-import { Idea } from "@/utils/types";
+import { Category, Idea } from "@/utils/types";
 import { getCategoriesFromDb, getIdeasByDate } from "@/utils/queries";
+
+type Section = {
+  category: Category;
+  data: Idea[];
+};
 
 const initialDate = dayjs().format("YYYY-MM-DD");
 
 const IdeasScreen = () => {
   const [selectedDate, setSelectedDate] = useState(initialDate);
-  const { categoryMap, setCategories, setIdeasToCategory } = useCategoryStore();
+  const { categoryMap, setCategoriesToMap, setIdeasToCategory } =
+    useCategoryStore();
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -28,7 +34,7 @@ const IdeasScreen = () => {
           getIdeasByDate(selectedDate),
         ]);
 
-        setCategories(categoriesData);
+        setCategoriesToMap(categoriesData);
         setIdeasToCategory(ideasData);
       } catch (error) {
         console.error("Error loading initial data:", error);
@@ -36,13 +42,18 @@ const IdeasScreen = () => {
     };
 
     loadInitialData();
-  }, []);
+  }, [selectedDate]);
 
   const sections = useMemo(() => {
-    return Object.values(categoryMap).map((category) => ({
-      category,
-      data: category.ideas,
-    }));
+    return Object.values(categoryMap).reduce<Section[]>((acc, category) => {
+      if (category.ideas && category.ideas.length > 0) {
+        acc.push({
+          category: { id: category.id, name: category.name },
+          data: category.ideas,
+        });
+      }
+      return acc;
+    }, []);
   }, [categoryMap]);
 
   const handleDateChange = useCallback((date: DateData) => {

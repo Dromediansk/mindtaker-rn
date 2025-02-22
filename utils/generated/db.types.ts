@@ -26,7 +26,7 @@ export type Database = {
       }
       ideas: {
         Row: {
-          category_id: string | null
+          category_id: string
           created_at: string
           description: string | null
           id: string
@@ -35,7 +35,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          category_id?: string | null
+          category_id: string
           created_at?: string
           description?: string | null
           id?: string
@@ -44,7 +44,7 @@ export type Database = {
           user_id: string
         }
         Update: {
-          category_id?: string | null
+          category_id?: string
           created_at?: string
           description?: string | null
           id?: string
