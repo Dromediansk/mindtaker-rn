@@ -29,6 +29,22 @@ cssInterop(ActivityIndicator, {
   },
 });
 
+const renderSectionHeader = ({
+  section: { category },
+}: {
+  section: Section;
+}) => (
+  <StyledText className="text-2xl px-4 pt-2 pb-1">{category.name}</StyledText>
+);
+
+const EmptyListComponent = () => (
+  <View className="flex-1 justify-center items-center">
+    <StyledText className="text-lg text-gray-500">
+      No idea for this day noted
+    </StyledText>
+  </View>
+);
+
 const IdeasScreen = () => {
   const [selectedDate, setSelectedDate] = useState(initialDate);
   const [isLoading, setIsLoading] = useState(true);
@@ -116,20 +132,14 @@ const IdeasScreen = () => {
           <SectionList
             sections={sections}
             renderItem={renderItem}
-            ListEmptyComponent={() => (
-              <View className="flex-1 justify-center items-center">
-                <StyledText className="text-lg text-gray-500">
-                  No idea for this day noted
-                </StyledText>
-              </View>
-            )}
-            renderSectionHeader={({ section: { category } }) => (
-              <StyledText className="text-2xl px-4 pt-2 pb-1">
-                {category.name}
-              </StyledText>
-            )}
+            renderSectionHeader={renderSectionHeader}
+            ListEmptyComponent={EmptyListComponent}
             keyExtractor={(item) => item.id}
             contentContainerClassName="gap-2 flex-1"
+            maxToRenderPerBatch={10}
+            updateCellsBatchingPeriod={50}
+            initialNumToRender={8}
+            windowSize={5}
           />
         )}
         <Link asChild href="/ideas/new">
