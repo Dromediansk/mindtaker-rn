@@ -1,7 +1,7 @@
 import IdeaItem from "@/components/IdeaItem";
 import dayjs from "dayjs";
 import React, { useCallback, useState, useEffect, useMemo } from "react";
-import { View, SectionList, Pressable } from "react-native";
+import { View, SectionList, Pressable, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import {
   CalendarProvider,
@@ -13,6 +13,7 @@ import { StyledText } from "@/components/StyledText";
 import { useCategoryStore } from "@/store/category.store";
 import { Category, Idea } from "@/utils/types";
 import { getCategoriesFromDb, getIdeasByDate } from "@/utils/queries";
+import { cssInterop } from "nativewind";
 
 type Section = {
   category: Category;
@@ -21,14 +22,30 @@ type Section = {
 
 const initialDate = dayjs().format("YYYY-MM-DD");
 
+cssInterop(ActivityIndicator, {
+  className: {
+    target: "style",
+    nativeStyleToProp: { color: true, fontSize: "size" },
+  },
+});
+
 const IdeasScreen = () => {
   const [selectedDate, setSelectedDate] = useState(initialDate);
-  const { categoryMap, setCategoriesToMap, setIdeasToCategory } =
-    useCategoryStore();
+  const [isLoading, setIsLoading] = useState(true);
+  const {
+    categoryMap,
+    setCategoriesToMap,
+    setIdeasToCategory,
+    clearCategoryMap,
+  } = useCategoryStore();
+
+  const currentWeekMonday = dayjs(selectedDate).day(1);
 
   useEffect(() => {
     const loadInitialData = async () => {
       try {
+        setIsLoading(true);
+        clearCategoryMap();
         const [categoriesData, ideasData] = await Promise.all([
           getCategoriesFromDb(null),
           getIdeasByDate(selectedDate),
@@ -38,15 +55,16 @@ const IdeasScreen = () => {
         setIdeasToCategory(ideasData);
       } catch (error) {
         console.error("Error loading initial data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     loadInitialData();
-  }, [selectedDate, setCategoriesToMap, setIdeasToCategory]);
+  }, [selectedDate]);
 
   const sections = useMemo(() => {
     return Object.values(categoryMap).reduce<Section[]>((acc, category) => {
-      console.log("category", category);
       if (category.ideas && category.ideas.length > 0) {
         acc.push({
           category: {
@@ -60,8 +78,6 @@ const IdeasScreen = () => {
       return acc;
     }, []);
   }, [categoryMap]);
-
-  console.log("sections", sections);
 
   const handleDateChange = useCallback((date: DateData) => {
     setSelectedDate(date.dateString);
@@ -77,20 +93,45 @@ const IdeasScreen = () => {
       <ExpandableCalendar
         firstDay={1}
         onDayPress={handleDateChange}
+        onPressArrowLeft={() => {
+          const previousMonday = currentWeekMonday
+            .subtract(7, "day")
+            .format("YYYY-MM-DD");
+          setSelectedDate(previousMonday);
+        }}
+        onPressArrowRight={() => {
+          const nextMonday = currentWeekMonday
+            .add(7, "day")
+            .format("YYYY-MM-DD");
+          setSelectedDate(nextMonday);
+        }}
         allowShadow
       />
       <View className="flex-1">
-        <SectionList
-          sections={sections}
-          renderItem={renderItem}
-          renderSectionHeader={({ section: { category } }) => (
-            <StyledText className="text-2xl px-4 pt-2 pb-1">
-              {category.name}
-            </StyledText>
-          )}
-          keyExtractor={(item) => item.id}
-          contentContainerClassName="gap-2"
-        />
+        {isLoading ? (
+          <View className="flex-1 justify-center items-center">
+            <ActivityIndicator size="large" className="text-main" />
+          </View>
+        ) : (
+          <SectionList
+            sections={sections}
+            renderItem={renderItem}
+            ListEmptyComponent={() => (
+              <View className="flex-1 justify-center items-center">
+                <StyledText className="text-lg text-gray-500">
+                  No idea for this day noted
+                </StyledText>
+              </View>
+            )}
+            renderSectionHeader={({ section: { category } }) => (
+              <StyledText className="text-2xl px-4 pt-2 pb-1">
+                {category.name}
+              </StyledText>
+            )}
+            keyExtractor={(item) => item.id}
+            contentContainerClassName="gap-2 flex-1"
+          />
+        )}
         <Link asChild href="/ideas/new">
           <Pressable
             className="absolute bottom-6 right-6 bg-main w-14 h-14 rounded-full items-center justify-center shadow-lg"

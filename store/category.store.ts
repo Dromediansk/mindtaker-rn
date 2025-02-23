@@ -6,11 +6,13 @@ type CategoryMap = Record<string, CategoryWithIdeas>;
 type CategoryStore = {
   categoryMap: CategoryMap;
   setCategoriesToMap: (categories: CategoryWithIdeas[]) => void;
+
   emptyCategory: Category;
   setEmptyCategory: (categories: Category[]) => void;
 
   getIdeasByCategory: (categoryId: string) => Idea[];
   setIdeasToCategory: (ideas: Idea[]) => void;
+  clearCategoryMap: () => void;
 };
 
 export const useCategoryStore = create<CategoryStore>((set, get) => ({
@@ -48,16 +50,20 @@ export const useCategoryStore = create<CategoryStore>((set, get) => ({
     const category = get().categoryMap[categoryId];
     return category ? category.ideas : [];
   },
+  clearCategoryMap: () => {
+    set({ categoryMap: {} });
+  },
   setIdeasToCategory: (ideas) => {
     const newMap = { ...get().categoryMap };
     ideas.forEach((idea) => {
       const category = newMap[idea.category_id];
-      // if category already exists, add the idea
-      if (category) {
+      if (
+        category &&
+        !category.ideas.some((existingIdea) => existingIdea.id === idea.id)
+      ) {
+        // Check if idea already exists before adding
         category.ideas.push(idea);
-      }
-      // if category doesn't exist, create it
-      else {
+      } else {
         newMap[idea.category_id] = {
           id: idea.category_id,
           name: "No Category",
