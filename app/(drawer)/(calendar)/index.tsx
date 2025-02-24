@@ -1,7 +1,13 @@
 import IdeaItem from "@/components/IdeaItem";
 import dayjs from "dayjs";
 import React, { useCallback, useState, useEffect, useMemo } from "react";
-import { View, SectionList, Pressable, ActivityIndicator } from "react-native";
+import {
+  View,
+  SectionList,
+  Pressable,
+  ActivityIndicator,
+  RefreshControl,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import {
   CalendarProvider,
@@ -14,6 +20,7 @@ import { useCategoryStore } from "@/store/category.store";
 import { Category, Idea } from "@/utils/types";
 import { getCategoriesFromDb, getIdeasFromDb } from "@/utils/queries";
 import { cssInterop } from "nativewind";
+import { COLORS } from "@/utils/theme";
 
 type Section = {
   category: Category;
@@ -48,6 +55,7 @@ const EmptyListComponent = () => (
 const IdeasScreen = () => {
   const [selectedDate, setSelectedDate] = useState(initialDate);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const {
     categoryMap,
     setCategoriesToMap,
@@ -99,6 +107,18 @@ const IdeasScreen = () => {
     setSelectedDate(date.dateString);
   }, []);
 
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      const ideasData = await getIdeasFromDb(selectedDate);
+      setIdeasToCategory(ideasData);
+    } catch (error) {
+      console.error("Error refreshing ideas:", error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [selectedDate]);
+
   const renderItem = useCallback(
     ({ item }: { item: Idea }) => <IdeaItem item={item} />,
     []
@@ -140,6 +160,14 @@ const IdeasScreen = () => {
             updateCellsBatchingPeriod={50}
             initialNumToRender={8}
             windowSize={5}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                colors={[COLORS.main]}
+                tintColor={COLORS.main}
+              />
+            }
           />
         )}
         <Link asChild href="/ideas/new">
