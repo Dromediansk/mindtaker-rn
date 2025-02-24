@@ -48,9 +48,9 @@ const DrawerLayout = () => {
             headerTitle: "",
             headerLeft: () => (
               <Pressable onPress={() => navigation.openDrawer()}>
-                {user?.avatarUrl ? (
+                {user.user_metadata.picture ? (
                   <Image
-                    source={{ uri: user.avatarUrl }}
+                    source={{ uri: user.user_metadata.picture }}
                     style={{
                       width: 28,
                       height: 28,
@@ -69,7 +69,7 @@ const DrawerLayout = () => {
                     }}
                   >
                     <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-                      {user?.name?.[0]?.toUpperCase() || "U"}
+                      {user.user_metadata.name[0]?.toUpperCase() || "U"}
                     </Text>
                   </View>
                 )}

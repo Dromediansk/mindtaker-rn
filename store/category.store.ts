@@ -57,11 +57,7 @@ export const useCategoryStore = create<CategoryStore>((set, get) => ({
     const newMap = { ...get().categoryMap };
     ideas.forEach((idea) => {
       const category = newMap[idea.category_id];
-      if (
-        category &&
-        !category.ideas.some((existingIdea) => existingIdea.id === idea.id)
-      ) {
-        // Check if idea already exists before adding
+      if (category) {
         category.ideas.push(idea);
       } else {
         newMap[idea.category_id] = {

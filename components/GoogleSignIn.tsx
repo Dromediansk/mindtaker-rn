@@ -34,13 +34,7 @@ const GoogleSignIn = () => {
         const user = data?.user;
 
         if (user) {
-          setUser({
-            id: user.id,
-            email: user.email || "",
-            name: user.user_metadata.name,
-            fullName: user.user_metadata.full_name,
-            avatarUrl: user.user_metadata.picture,
-          });
+          setUser(user);
           router.replace("/");
         }
       } else {

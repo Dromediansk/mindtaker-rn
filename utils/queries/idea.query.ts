@@ -40,3 +40,13 @@ export const getIdeasFromDb = resolveWithAuth(async (user, date?: string) => {
   if (error) throw error;
   return data;
 });
+
+export const deleteIdeaFromDb = resolveWithAuth(async (_, ideaId?: string) => {
+  if (!ideaId) {
+    throw new Error("Idea ID is required to delete an idea.");
+  }
+  const { error } = await supabase.from("ideas").delete().eq("id", ideaId);
+
+  if (error) throw error;
+  return true;
+});
