@@ -26,7 +26,7 @@ export const createIdeaToDb = resolveWithAuth(
   }
 );
 
-export const getIdeasByDate = resolveWithAuth(async (user, date?: string) => {
+export const getIdeasFromDb = resolveWithAuth(async (user, date?: string) => {
   const startOfDay = dayjs(date).startOf("day").toISOString();
   const endOfDay = dayjs(date).endOf("day").toISOString();
 

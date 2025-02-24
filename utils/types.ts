@@ -10,5 +10,5 @@ export type CategoryWithIdeas = Tables<"categories"> & {
 export type CreateIdeaParams = {
   title: string;
   description: string;
-  categoryId: string | null;
+  categoryId: Category["id"];
 };

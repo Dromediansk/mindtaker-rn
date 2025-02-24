@@ -6,6 +6,6 @@ export const resolveCreateIdea = (idea: CreateIdeaParams) => {
   return {
     title: title.trim(),
     description: description.trim(),
-    category_id: categoryId === "none" ? null : categoryId,
+    category_id: categoryId,
   };
 };

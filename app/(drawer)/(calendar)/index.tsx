@@ -12,7 +12,7 @@ import { Link } from "expo-router";
 import { StyledText } from "@/components/StyledText";
 import { useCategoryStore } from "@/store/category.store";
 import { Category, Idea } from "@/utils/types";
-import { getCategoriesFromDb, getIdeasByDate } from "@/utils/queries";
+import { getCategoriesFromDb, getIdeasFromDb } from "@/utils/queries";
 import { cssInterop } from "nativewind";
 
 type Section = {
@@ -64,7 +64,7 @@ const IdeasScreen = () => {
         clearCategoryMap();
         const [categoriesData, ideasData] = await Promise.all([
           getCategoriesFromDb(null),
-          getIdeasByDate(selectedDate),
+          getIdeasFromDb(selectedDate),
         ]);
 
         setCategoriesToMap(categoriesData);
