@@ -21,6 +21,7 @@ import { Category, Idea } from "@/utils/types";
 import { getCategoriesFromDb, getIdeasFromDb } from "@/utils/queries";
 import { cssInterop } from "nativewind";
 import { COLORS } from "@/utils/theme";
+import ListSkeleton from "@/components/ListSkeleton";
 
 type Section = {
   category: Category;
@@ -55,6 +56,7 @@ const EmptyListComponent = () => (
 const IdeasScreen = () => {
   const [selectedDate, setSelectedDate] = useState(initialDate);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const {
     categoryMap,
     setCategoriesToMap,
@@ -103,14 +105,14 @@ const IdeasScreen = () => {
   }, []);
 
   const onRefresh = useCallback(async () => {
-    setIsLoading(true);
+    setIsRefreshing(true);
     try {
       const ideasData = await getIdeasFromDb(selectedDate);
       setIdeasToCategory(ideasData);
     } catch (error) {
       console.error("Error refreshing ideas:", error);
     } finally {
-      setIsLoading(false);
+      setIsRefreshing(false);
     }
   }, [selectedDate]);
 
@@ -139,26 +141,31 @@ const IdeasScreen = () => {
         allowShadow
       />
       <View className="flex-1">
-        <SectionList
-          sections={sections}
-          renderItem={renderItem}
-          renderSectionHeader={renderSectionHeader}
-          ListEmptyComponent={EmptyListComponent}
-          keyExtractor={(item) => item.id}
-          contentContainerClassName="gap-2 flex-1"
-          maxToRenderPerBatch={10}
-          updateCellsBatchingPeriod={50}
-          initialNumToRender={8}
-          windowSize={5}
-          refreshControl={
-            <RefreshControl
-              refreshing={isLoading}
-              onRefresh={onRefresh}
-              colors={[COLORS.main]}
-              tintColor={COLORS.main}
-            />
-          }
-        />
+        {isLoading ? (
+          <ListSkeleton />
+        ) : (
+          <SectionList
+            sections={sections}
+            renderItem={renderItem}
+            renderSectionHeader={renderSectionHeader}
+            ListEmptyComponent={EmptyListComponent}
+            keyExtractor={(item) => item.id}
+            contentContainerClassName="gap-2 flex-1"
+            maxToRenderPerBatch={10}
+            updateCellsBatchingPeriod={50}
+            initialNumToRender={8}
+            windowSize={5}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={onRefresh}
+                colors={[COLORS.main]}
+                tintColor={COLORS.main}
+              />
+            }
+          />
+        )}
+
         <Link asChild href="/ideas/new">
           <Pressable
             className="absolute bottom-6 right-6 bg-main w-14 h-14 rounded-full items-center justify-center shadow-lg"
