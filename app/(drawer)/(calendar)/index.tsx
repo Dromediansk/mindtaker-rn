@@ -22,6 +22,7 @@ import { getCategoriesFromDb, getIdeasFromDb } from "@/utils/queries";
 import { cssInterop } from "nativewind";
 import { COLORS } from "@/utils/theme";
 import ListSkeleton from "@/components/ListSkeleton";
+import { LinearGradient } from "expo-linear-gradient";
 
 type Section = {
   category: Category;
@@ -37,12 +38,41 @@ cssInterop(ActivityIndicator, {
   },
 });
 
+cssInterop(Ionicons, {
+  className: {
+    target: "style",
+    nativeStyleToProp: { color: true, fontSize: "size" },
+  },
+});
+
 const renderSectionHeader = ({
-  section: { category },
+  section: { category, data },
 }: {
   section: Section;
 }) => (
-  <StyledText className="text-2xl px-4 pt-2 pb-1">{category.name}</StyledText>
+  <LinearGradient
+    colors={[COLORS.main_dark, COLORS.main]}
+    start={{ x: 0, y: 0 }}
+    end={{ x: 1, y: 0 }}
+    className="px-4 py-3 shadow-sm"
+  >
+    <View className="flex-row items-center justify-between">
+      <View className="flex-row items-center gap-2">
+        <Ionicons
+          name={category.is_category_none ? "folder-outline" : "folder"}
+          className="text-white text-2xl"
+        />
+        <StyledText className="text-xl text-white font-bold shadow-sm">
+          {category.name}
+        </StyledText>
+      </View>
+      <View className="bg-white/20 px-2.5 py-1 rounded-full">
+        <StyledText className="text-sm text-white font-medium">
+          {data.length} {data.length === 1 ? "idea" : "ideas"}
+        </StyledText>
+      </View>
+    </View>
+  </LinearGradient>
 );
 
 const EmptyListComponent = () => (
@@ -140,7 +170,7 @@ const IdeasScreen = () => {
         }}
         allowShadow
       />
-      <View className="flex-1">
+      <View>
         {isLoading ? (
           <ListSkeleton />
         ) : (
@@ -150,7 +180,8 @@ const IdeasScreen = () => {
             renderSectionHeader={renderSectionHeader}
             ListEmptyComponent={EmptyListComponent}
             keyExtractor={(item) => item.id}
-            contentContainerClassName="gap-2 flex-1"
+            stickySectionHeadersEnabled
+            contentContainerClassName="gap-2 pt-4 pb-56"
             maxToRenderPerBatch={10}
             updateCellsBatchingPeriod={50}
             initialNumToRender={8}
@@ -165,16 +196,16 @@ const IdeasScreen = () => {
             }
           />
         )}
-
-        <Link asChild href="/ideas/new">
-          <Pressable
-            className="absolute bottom-6 right-6 bg-main w-14 h-14 rounded-full items-center justify-center shadow-lg"
-            hitSlop={15}
-          >
-            <Ionicons name="add" size={30} color="white" />
-          </Pressable>
-        </Link>
       </View>
+
+      <Link asChild href="/ideas/new">
+        <Pressable
+          className="absolute bottom-6 right-6 bg-main w-14 h-14 rounded-full items-center justify-center shadow-lg"
+          hitSlop={15}
+        >
+          <Ionicons name="add" size={30} color="white" />
+        </Pressable>
+      </Link>
     </CalendarProvider>
   );
 };

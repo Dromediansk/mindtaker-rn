@@ -22,8 +22,10 @@ const IdeaItem = ({ item }: IdeaItemProps) => {
       className="bg-white p-4 mx-4 rounded-lg mb-2 active:opacity-50"
       onPress={handlePress}
     >
-      <StyledText className="text-lg font-medium mb-1">{item.title}</StyledText>
-      <StyledText className="text-gray-600" numberOfLines={2}>
+      <StyledText className="text-2xl font-medium mb-1">
+        {item.title}
+      </StyledText>
+      <StyledText className="text-gray-600 text-xl" numberOfLines={2}>
         {item.description}
       </StyledText>
     </Pressable>
