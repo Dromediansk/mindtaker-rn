@@ -25,24 +25,12 @@ export const useCategoryStore = create<CategoryStore>((set, get) => ({
     });
   },
   setCategoriesToMap: (categories) => {
-    const newMap = { ...get().categoryMap };
+    const newMap = {} as CategoryMap;
     categories.forEach((category) => {
-      // if category is the empty category
       if (category.is_category_none) {
         set({ emptyCategory: category });
-        return;
       }
-      // if category already exists, merge the ideas
-      if (newMap[category.id]) {
-        newMap[category.id] = {
-          ...newMap[category.id],
-          ideas: [...newMap[category.id].ideas, ...category.ideas],
-        };
-      }
-      // if category doesn't exist, add it
-      else {
-        newMap[category.id] = category;
-      }
+      newMap[category.id] = category;
     });
     set({ categoryMap: newMap });
   },
@@ -55,17 +43,24 @@ export const useCategoryStore = create<CategoryStore>((set, get) => ({
   },
   setIdeasToCategory: (ideas) => {
     const newMap = { ...get().categoryMap };
+    // Group ideas by category_id
+    const ideasByCategory: Record<string, Idea[]> = {};
     ideas.forEach((idea) => {
-      const category = newMap[idea.category_id];
-      if (category) {
-        category.ideas.push(idea);
-      } else {
-        newMap[idea.category_id] = {
-          id: idea.category_id,
-          name: "No Category",
-          ideas: [idea],
-          is_category_none: false,
+      if (!ideasByCategory[idea.category_id]) {
+        ideasByCategory[idea.category_id] = [];
+      }
+      ideasByCategory[idea.category_id].push(idea);
+    });
+
+    // Update each category with its new ideas
+    Object.keys(ideasByCategory).forEach((categoryId) => {
+      if (newMap[categoryId]) {
+        newMap[categoryId] = {
+          ...newMap[categoryId],
+          ideas: ideasByCategory[categoryId],
         };
+      } else {
+        console.warn(`Category with id ${categoryId} not found.`);
       }
     });
     set({ categoryMap: newMap });

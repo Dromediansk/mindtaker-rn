@@ -69,13 +69,9 @@ const IdeasScreen = () => {
       try {
         setIsLoading(true);
         clearCategoryMap();
-        const [categoriesData, ideasData] = await Promise.all([
-          getCategoriesFromDb(null),
-          getIdeasFromDb(selectedDate),
-        ]);
+        const categoriesData = await getCategoriesFromDb(selectedDate);
 
         setCategoriesToMap(categoriesData);
-        setIdeasToCategory(ideasData);
       } catch (error) {
         console.error("Error loading initial data:", error);
       } finally {
@@ -108,7 +104,6 @@ const IdeasScreen = () => {
 
   const onRefresh = useCallback(async () => {
     setIsLoading(true);
-    clearCategoryMap();
     try {
       const ideasData = await getIdeasFromDb(selectedDate);
       setIdeasToCategory(ideasData);

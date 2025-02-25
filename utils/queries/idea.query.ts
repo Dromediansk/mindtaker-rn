@@ -22,7 +22,8 @@ export const createIdeaToDb = resolveWithAuth(
       .select();
 
     if (error) throw error;
-    return data;
+
+    return data[0];
   }
 );
 
