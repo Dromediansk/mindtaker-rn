@@ -9,17 +9,25 @@ interface IdeaItemProps {
 }
 
 const IdeaItem = ({ item }: IdeaItemProps) => {
+  const handlePress = () => {
+    if (!item?.id || !item?.category_id) {
+      console.warn("Invalid idea data");
+      return;
+    }
+    router.push(`/ideas/${item.id}?categoryId=${item.category_id}`);
+  };
+
   return (
     <Pressable
-      className="bg-white p-4 mx-4 rounded-lg"
-      onPress={() =>
-        router.push(`/ideas/${item.id}?categoryId=${item.category_id}`)
-      }
+      className="bg-white p-4 mx-4 rounded-lg mb-2 active:opacity-50"
+      onPress={handlePress}
     >
-      <StyledText className="text-lg">{item.title}</StyledText>
-      <StyledText numberOfLines={2}>{item.description}</StyledText>
+      <StyledText className="text-lg font-medium mb-1">{item.title}</StyledText>
+      <StyledText className="text-gray-600" numberOfLines={2}>
+        {item.description}
+      </StyledText>
     </Pressable>
   );
 };
 
-export default IdeaItem;
+export default React.memo(IdeaItem);

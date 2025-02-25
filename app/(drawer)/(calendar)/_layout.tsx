@@ -4,11 +4,19 @@ import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 import { deleteIdeaFromDb } from "@/utils/queries";
+import { cssInterop } from "nativewind";
 
 type IdeaRouteParams = {
   categoryId: string;
   id: string;
 };
+
+cssInterop(Ionicons, {
+  className: {
+    target: "style",
+    nativeStyleToProp: { color: true, fontSize: "size" },
+  },
+});
 
 const CalendarLayout = () => {
   const handleDeleteIdea = async (id: string) => {
