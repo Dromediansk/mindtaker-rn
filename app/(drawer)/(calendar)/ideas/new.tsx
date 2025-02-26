@@ -15,7 +15,8 @@ cssInterop(Picker, {
 });
 
 const NewScreen = () => {
-  const { categoryMap, emptyCategory, setIdeasToCategory } = useCategoryStore();
+  const { categoryMap, emptyCategory, setIdeasToCategory, getIdeasByCategory } =
+    useCategoryStore();
 
   const [content, setContent] = useState("");
   const [categoryId, setCategoryId] = useState(emptyCategory.id);
@@ -30,8 +31,9 @@ const NewScreen = () => {
 
     setIsLoading(true);
     try {
+      const oldIdeas = getIdeasByCategory(categoryId);
       const newIdea = await createIdeaToDb({ content, categoryId });
-      setIdeasToCategory([newIdea]);
+      setIdeasToCategory([...oldIdeas, newIdea]);
       router.back();
     } catch (error) {
       console.error(error);

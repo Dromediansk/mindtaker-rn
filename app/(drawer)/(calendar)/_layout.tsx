@@ -41,7 +41,7 @@ const CalendarLayout = () => {
         options={({ route }) => ({
           presentation: "modal",
           animation: "slide_from_right",
-          headerTitleAlign: "center",
+          title: "",
           headerRight: () => (
             <TouchableOpacity
               onPress={() =>
