@@ -17,21 +17,20 @@ cssInterop(Picker, {
 const NewScreen = () => {
   const { categoryMap, emptyCategory, setIdeasToCategory } = useCategoryStore();
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [content, setContent] = useState("");
   const [categoryId, setCategoryId] = useState(emptyCategory.id);
 
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCreate = async () => {
-    if (!title.trim() && !description.trim()) {
-      Alert.alert("Missing data", "Please fill in title or description");
+    if (!content.trim()) {
+      Alert.alert("Missing data", "Please fill in your idea");
       return;
     }
 
     setIsLoading(true);
     try {
-      const newIdea = await createIdeaToDb({ title, description, categoryId });
+      const newIdea = await createIdeaToDb({ content, categoryId });
       setIdeasToCategory([newIdea]);
       router.back();
     } catch (error) {
@@ -48,18 +47,10 @@ const NewScreen = () => {
 
   return (
     <View className="flex-1 bg-white">
-      <View className="px-4 pt-2 pb-2">
-        <StyledTextInput
-          value={title}
-          onChangeText={setTitle}
-          placeholder="Title"
-          className="h-20"
-        />
-      </View>
       <View className="px-4 pt-2 pb-2 flex-1">
         <StyledTextInput
-          value={description}
-          onChangeText={setDescription}
+          value={content}
+          onChangeText={setContent}
           placeholder="Describe it in detail..."
           className="h-full"
           multiline

@@ -57,7 +57,7 @@ export const useCategoryStore = create<CategoryStore>((set, get) => ({
       if (newMap[categoryId]) {
         newMap[categoryId] = {
           ...newMap[categoryId],
-          ideas: ideasByCategory[categoryId],
+          ideas: [...newMap[categoryId].ideas, ...ideasByCategory[categoryId]],
         };
       } else {
         console.warn(`Category with id ${categoryId} not found.`);

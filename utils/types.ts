@@ -8,7 +8,6 @@ export type CategoryWithIdeas = Tables<"categories"> & {
 };
 
 export type CreateIdeaParams = {
-  title: string;
-  description: string;
+  content: string;
   categoryId: Category["id"];
 };

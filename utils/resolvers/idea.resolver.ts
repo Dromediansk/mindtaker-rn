@@ -1,11 +1,10 @@
 import { CreateIdeaParams } from "../types";
 
 export const resolveCreateIdea = (idea: CreateIdeaParams) => {
-  const { title, description, categoryId } = idea;
+  const { content, categoryId } = idea;
 
   return {
-    title: title.trim(),
-    description: description.trim(),
+    content: content.trim(),
     category_id: categoryId,
   };
 };

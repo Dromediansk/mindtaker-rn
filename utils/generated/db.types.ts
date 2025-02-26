@@ -30,29 +30,26 @@ export type Database = {
       ideas: {
         Row: {
           category_id: string
+          content: string
           created_at: string
-          description: string | null
           id: string
           modified_at: string | null
-          title: string | null
           user_id: string
         }
         Insert: {
           category_id: string
+          content: string
           created_at?: string
-          description?: string | null
           id?: string
           modified_at?: string | null
-          title?: string | null
           user_id: string
         }
         Update: {
           category_id?: string
+          content?: string
           created_at?: string
-          description?: string | null
           id?: string
           modified_at?: string | null
-          title?: string | null
           user_id?: string
         }
         Relationships: [

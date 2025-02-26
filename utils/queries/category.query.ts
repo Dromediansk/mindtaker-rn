@@ -18,7 +18,7 @@ export const getCategoriesFromDb = resolveWithAuth(
         `id, 
       name,
       is_category_none, 
-      ideas: ideas (id, title, description, created_at, category_id)`
+      ideas: ideas (id, content, created_at, category_id)`
       )
       .eq("ideas.user_id", user.id)
       .gte("ideas.created_at", startOfDay)
