@@ -46,6 +46,12 @@ const DrawerLayout = () => {
           options={({ navigation }) => ({
             drawerLabel: "Calendar",
             headerTitle: "",
+            headerStyle: {
+              borderWidth: 0,
+              shadowColor: "transparent",
+              shadowOpacity: 0,
+              elevation: 0,
+            },
             headerLeft: () => (
               <Pressable onPress={() => navigation.openDrawer()}>
                 {user.user_metadata.picture ? (

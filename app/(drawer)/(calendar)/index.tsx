@@ -20,7 +20,7 @@ import { useCategoryStore } from "@/store/category.store";
 import { Category, Idea } from "@/utils/types";
 import { getCategoriesFromDb, getIdeasFromDb } from "@/utils/queries";
 import { cssInterop } from "nativewind";
-import { COLORS } from "@/utils/theme";
+import { calendarTheme, COLORS } from "@/utils/theme";
 import ListSkeleton from "@/components/ListSkeleton";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -155,6 +155,7 @@ const IdeasScreen = () => {
     <CalendarProvider date={selectedDate} showTodayButton>
       <ExpandableCalendar
         firstDay={1}
+        allowShadow
         onDayPress={handleDateChange}
         onPressArrowLeft={() => {
           const previousMonday = currentWeekMonday
@@ -168,7 +169,7 @@ const IdeasScreen = () => {
             .format("YYYY-MM-DD");
           setSelectedDate(nextMonday);
         }}
-        allowShadow
+        theme={calendarTheme}
       />
       <View>
         {isLoading ? (
