@@ -66,3 +66,21 @@ export const searchIdeasFromDb = resolveWithAuth(
     return data;
   }
 );
+
+export const updateIdeaInDb = resolveWithAuth(
+  async (user, params?: { ideaId: string; content: string }) => {
+    if (!params?.ideaId || !params?.content) {
+      throw new Error("Idea ID and content are required to update an idea.");
+    }
+
+    const { data, error } = await supabase
+      .from("ideas")
+      .update({ content: params.content })
+      .eq("id", params.ideaId)
+      .eq("user_id", user.id)
+      .select();
+
+    if (error) throw error;
+    return data;
+  }
+);
