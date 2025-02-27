@@ -5,6 +5,7 @@ import { TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 import { deleteIdeaFromDb } from "@/utils/queries";
 import { cssInterop } from "nativewind";
+import { useCategoryStore } from "@/store/category.store";
 
 type IdeaRouteParams = {
   categoryId: string;
@@ -19,9 +20,15 @@ cssInterop(Ionicons, {
 });
 
 const CalendarLayout = () => {
-  const handleDeleteIdea = async (id: string) => {
-    await deleteIdeaFromDb(id);
-    router.back();
+  const { deleteIdeaFromCategory } = useCategoryStore();
+  const handleDeleteIdea = async (id: string, categoryId: string) => {
+    try {
+      await deleteIdeaFromDb(id);
+      deleteIdeaFromCategory(id, categoryId);
+      router.back();
+    } catch (error) {
+      console.error("Failed to delete idea:", error);
+    }
   };
 
   return (
@@ -45,7 +52,10 @@ const CalendarLayout = () => {
           headerRight: () => (
             <TouchableOpacity
               onPress={() =>
-                handleDeleteIdea((route.params as IdeaRouteParams).id)
+                handleDeleteIdea(
+                  (route.params as IdeaRouteParams).id,
+                  (route.params as IdeaRouteParams).categoryId
+                )
               }
             >
               <Ionicons

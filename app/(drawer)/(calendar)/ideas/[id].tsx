@@ -7,9 +7,9 @@ import React, { useState } from "react";
 import {
   ScrollView,
   View,
-  TouchableOpacity,
   Pressable,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 
 const DetailScreen = () => {
@@ -27,8 +27,19 @@ const DetailScreen = () => {
   const [editedContent, setEditedContent] = useState(idea?.content || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async () => {
-    if (!idea) return;
+  if (!idea) return null;
+
+  const handleSubmitEdit = async () => {
+    if (editedContent.trim() === idea.content.trim()) {
+      setIsEditing(false);
+      navigation.goBack();
+      return;
+    }
+
+    if (!editedContent.trim()) {
+      Alert.alert("Missing data", "Please fill in your idea");
+      return;
+    }
 
     try {
       setIsSubmitting(true);
@@ -49,8 +60,6 @@ const DetailScreen = () => {
     }
   };
 
-  if (!idea) return null;
-
   return (
     <View className="flex-1 bg-white">
       {isEditing ? (
@@ -68,9 +77,9 @@ const DetailScreen = () => {
           </View>
 
           <View className="p-4 bg-white border-t border-gray-200">
-            <TouchableOpacity
-              className={`${isSubmitting ? "bg-blue-400" : "bg-blue-500"} py-3 rounded-lg`}
-              onPress={handleSubmit}
+            <Pressable
+              className={`${isSubmitting ? "bg-gray-300" : "bg-main"} h-14 rounded-lg items-center justify-center`}
+              onPress={handleSubmitEdit}
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -80,7 +89,7 @@ const DetailScreen = () => {
                   Save Changes
                 </StyledText>
               )}
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
       ) : (

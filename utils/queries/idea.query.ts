@@ -42,28 +42,19 @@ export const getIdeasFromDb = resolveWithAuth(async (user, date?: string) => {
   return data;
 });
 
-export const deleteIdeaFromDb = resolveWithAuth(async (_, ideaId?: string) => {
-  if (!ideaId) {
-    throw new Error("Idea ID is required to delete an idea.");
-  }
-  const { error } = await supabase.from("ideas").delete().eq("id", ideaId);
-
-  if (error) throw error;
-  return true;
-});
-
-export const searchIdeasFromDb = resolveWithAuth(
-  async (user, query?: string) => {
-    if (!query) return [];
-
-    const { data, error } = await supabase
+export const deleteIdeaFromDb = resolveWithAuth(
+  async (user, ideaId?: string) => {
+    if (!ideaId) {
+      throw new Error("Idea ID is required to delete an idea.");
+    }
+    const { error } = await supabase
       .from("ideas")
-      .select("*")
+      .delete()
       .eq("user_id", user.id)
-      .ilike("content", `%${query}%`);
+      .eq("id", ideaId);
 
     if (error) throw error;
-    return data;
+    return true;
   }
 );
 
@@ -76,8 +67,8 @@ export const updateIdeaInDb = resolveWithAuth(
     const { data, error } = await supabase
       .from("ideas")
       .update({ content: params.content })
-      .eq("id", params.ideaId)
       .eq("user_id", user.id)
+      .eq("id", params.ideaId)
       .select();
 
     if (error) throw error;

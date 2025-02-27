@@ -6,13 +6,14 @@ type CategoryMap = Record<string, CategoryWithIdeas>;
 type CategoryStore = {
   categoryMap: CategoryMap;
   setCategoriesToMap: (categories: CategoryWithIdeas[]) => void;
+  clearCategoryMap: () => void;
 
   emptyCategory: Category;
   setEmptyCategory: (categories: Category[]) => void;
 
   getIdeasByCategory: (categoryId: string) => Idea[];
   setIdeasToCategory: (ideas: Idea[]) => void;
-  clearCategoryMap: () => void;
+  deleteIdeaFromCategory: (ideaId: string, categoryId: string) => void;
 };
 
 export const useCategoryStore = create<CategoryStore>((set, get) => ({
@@ -64,5 +65,17 @@ export const useCategoryStore = create<CategoryStore>((set, get) => ({
       }
     });
     set({ categoryMap: newMap });
+  },
+  deleteIdeaFromCategory: (ideaId, categoryId) => {
+    const category = get().categoryMap[categoryId];
+    if (!category) return;
+
+    const newIdeas = category.ideas.filter((idea) => idea.id !== ideaId);
+    set({
+      categoryMap: {
+        ...get().categoryMap,
+        [categoryId]: { ...category, ideas: newIdeas },
+      },
+    });
   },
 }));
