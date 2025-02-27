@@ -48,9 +48,7 @@ const DetailScreen = () => {
         content: editedContent,
       });
 
-      if (updatedIdeas) {
-        setIdeasToCategory(updatedIdeas);
-      }
+      setIdeasToCategory(updatedIdeas);
       navigation.goBack();
     } catch (error) {
       console.error("Failed to update idea:", error);
@@ -71,7 +69,7 @@ const DetailScreen = () => {
               value={editedContent}
               onChangeText={setEditedContent}
               autoFocus
-              style={{ textAlignVertical: "top" }}
+              textAlignVertical="top"
               editable={!isSubmitting}
             />
           </View>
@@ -93,7 +91,6 @@ const DetailScreen = () => {
           </View>
         </View>
       ) : (
-        // View mode: Scrollable text content
         <ScrollView className="flex-1 border-2 border-white rounded-lg m-2">
           <Pressable onPress={() => setIsEditing(true)} className="p-5">
             <StyledText className="text-2xl">{idea.content}</StyledText>

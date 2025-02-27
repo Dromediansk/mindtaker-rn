@@ -56,6 +56,7 @@ const NewScreen = () => {
           placeholder="Describe it in detail..."
           className="h-full"
           multiline
+          autoFocus
           textAlignVertical="top"
         />
       </View>

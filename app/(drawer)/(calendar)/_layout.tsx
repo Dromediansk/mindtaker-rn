@@ -21,6 +21,7 @@ cssInterop(Ionicons, {
 
 const CalendarLayout = () => {
   const { deleteIdeaFromCategory } = useCategoryStore();
+
   const handleDeleteIdea = async (id: string, categoryId: string) => {
     try {
       await deleteIdeaFromDb(id);
@@ -38,16 +39,17 @@ const CalendarLayout = () => {
         name="ideas/new"
         options={{
           title: "New Idea",
+          presentation: "modal",
           animation: "slide_from_bottom",
-          headerBackButtonDisplayMode: "minimal",
           headerTitleAlign: "center",
         }}
       />
       <Stack.Screen
         name="ideas/[id]"
         options={({ route }) => ({
-          presentation: "modal",
+          presentation: "card",
           animation: "slide_from_right",
+          headerBackButtonDisplayMode: "minimal",
           title: "",
           headerRight: () => (
             <TouchableOpacity

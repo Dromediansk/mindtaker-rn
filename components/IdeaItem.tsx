@@ -1,8 +1,9 @@
 import React from "react";
-import { Pressable } from "react-native";
+import { Pressable, Platform } from "react-native";
 import { StyledText } from "./StyledText";
 import { router } from "expo-router";
 import { Idea } from "@/utils/types";
+import { COLORS } from "@/utils/theme";
 
 interface IdeaItemProps {
   item: Idea;
@@ -19,7 +20,20 @@ const IdeaItem = ({ item }: IdeaItemProps) => {
 
   return (
     <Pressable
-      className="bg-white p-4 mx-4 rounded-lg border-2 border-transparent active:border-main active:bg-main/10"
+      className="bg-white p-4 mx-1 rounded-lg border-2 border-transparent active:border-main active:bg-main/10"
+      style={{
+        ...Platform.select({
+          ios: {
+            shadowColor: COLORS.black,
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.05,
+            shadowRadius: 2,
+          },
+          android: {
+            elevation: 2,
+          },
+        }),
+      }}
       onPress={handlePress}
     >
       <StyledText className="text-gray-600 text-xl" numberOfLines={2}>

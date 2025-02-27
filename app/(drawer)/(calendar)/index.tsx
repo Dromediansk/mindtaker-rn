@@ -182,7 +182,7 @@ const IdeasScreen = () => {
             ListEmptyComponent={EmptyListComponent}
             keyExtractor={(item) => item.id}
             stickySectionHeadersEnabled
-            contentContainerClassName="gap-2 pt-4 pb-56"
+            contentContainerClassName="gap-2 pb-56"
             maxToRenderPerBatch={10}
             updateCellsBatchingPeriod={50}
             initialNumToRender={8}
