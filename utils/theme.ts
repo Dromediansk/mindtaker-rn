@@ -16,6 +16,7 @@ export const calendarTheme: Theme = {
   monthTextColor: COLORS.main,
   textMonthFontFamily: "WorkSans-SemiBold",
   textDayHeaderFontFamily: "WorkSans-Regular",
+  textMonthFontWeight: "bold",
   // Arrow styling
   arrowColor: COLORS.main,
   arrowStyle: {

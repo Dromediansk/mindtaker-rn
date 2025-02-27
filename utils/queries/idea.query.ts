@@ -51,3 +51,18 @@ export const deleteIdeaFromDb = resolveWithAuth(async (_, ideaId?: string) => {
   if (error) throw error;
   return true;
 });
+
+export const searchIdeasFromDb = resolveWithAuth(
+  async (user, query?: string) => {
+    if (!query) return [];
+
+    const { data, error } = await supabase
+      .from("ideas")
+      .select("*")
+      .eq("user_id", user.id)
+      .ilike("content", `%${query}%`);
+
+    if (error) throw error;
+    return data;
+  }
+);
