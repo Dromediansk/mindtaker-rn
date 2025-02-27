@@ -4,7 +4,6 @@ import React, { useCallback, useState, useEffect, useMemo } from "react";
 import {
   View,
   SectionList,
-  Pressable,
   ActivityIndicator,
   RefreshControl,
 } from "react-native";
@@ -23,6 +22,7 @@ import { cssInterop } from "nativewind";
 import { calendarTheme, COLORS } from "@/utils/theme";
 import ListSkeleton from "@/components/ListSkeleton";
 import { LinearGradient } from "expo-linear-gradient";
+import { StyledButton } from "@/components/StyledButton";
 
 type Section = {
   category: Category;
@@ -200,12 +200,13 @@ const IdeasScreen = () => {
       </View>
 
       <Link asChild href="/ideas/new">
-        <Pressable
-          className="absolute bottom-6 right-6 bg-main w-14 h-14 rounded-full items-center justify-center shadow-lg"
-          hitSlop={15}
-        >
-          <Ionicons name="add" size={30} color="white" />
-        </Pressable>
+        <StyledButton
+          text="new"
+          className="w-40 absolute bottom-6 left-1/2 -translate-x-1/2"
+          icon={
+            <Ionicons name="bulb-outline" className="text-white text-2xl" />
+          }
+        />
       </Link>
     </CalendarProvider>
   );

@@ -1,5 +1,6 @@
 import { StyledText } from "@/components/StyledText";
 import StyledTextInput from "@/components/StyledTextInput";
+import { StyledButton } from "@/components/StyledButton";
 import { useCategoryStore } from "@/store/category.store";
 import { updateIdeaInDb } from "@/utils/queries/idea.query";
 import { useLocalSearchParams, useNavigation } from "expo-router";
@@ -74,20 +75,13 @@ const DetailScreen = () => {
             />
           </View>
 
-          <View className="p-4 bg-white border-t border-gray-200">
-            <Pressable
-              className={`${isSubmitting ? "bg-gray-300" : "bg-main"} h-14 rounded-lg items-center justify-center`}
+          <View className="p-4 bg-white border-t border-gray-200 flex items-center">
+            <StyledButton
+              text="Save"
               onPress={handleSubmitEdit}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? (
-                <ActivityIndicator color="white" />
-              ) : (
-                <StyledText className="text-white text-center font-medium text-lg">
-                  Save Changes
-                </StyledText>
-              )}
-            </Pressable>
+              isLoading={isSubmitting}
+              className="w-2/3"
+            />
           </View>
         </View>
       ) : (

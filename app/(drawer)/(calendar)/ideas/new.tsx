@@ -1,7 +1,7 @@
-import { Pressable, View, Alert } from "react-native";
+import { View, Alert } from "react-native";
 import React, { ReactNode, useState } from "react";
-import { StyledText } from "@/components/StyledText";
 import StyledTextInput from "@/components/StyledTextInput";
+import { StyledButton } from "@/components/StyledButton";
 import { router } from "expo-router";
 import { Picker } from "@react-native-picker/picker";
 import { useCategoryStore } from "@/store/category.store";
@@ -83,17 +83,12 @@ const NewScreen = () => {
         </Picker>
       </View>
       <View className="mb-10 flex items-center">
-        <Pressable
-          className={`w-2/3 h-14 rounded-lg items-center justify-center ${
-            isLoading ? "bg-gray-300" : "bg-main"
-          }`}
+        <StyledButton
+          text="Create"
           onPress={handleCreate}
-          disabled={isLoading}
-        >
-          <StyledText className="text-white text-xl uppercase">
-            {isLoading ? "Creating..." : "Create"}
-          </StyledText>
-        </Pressable>
+          isLoading={isLoading}
+          className="w-2/3"
+        />
       </View>
     </View>
   );
