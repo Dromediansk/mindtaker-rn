@@ -76,7 +76,7 @@ const renderSectionHeader = ({
 );
 
 const EmptyListComponent = () => (
-  <View className="flex-1 justify-center items-center">
+  <View className="justify-center items-center py-4">
     <StyledText className="text-lg text-gray-500">
       No idea for this day noted
     </StyledText>
