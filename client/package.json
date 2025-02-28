@@ -9,7 +9,7 @@
     "web": "expo start --web",
     "prebuild": "expo prebuild --clean",
     "db:generate": "supabase gen types typescript --project-id \"quacvzutxuztggfiswri\" --schema public > utils/generated/db.types.ts",
-    "update": "npx expo install --fix",
+    "update": "expo install --fix",
     "lint": "eslint ."
   },
   "dependencies": {
