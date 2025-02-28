@@ -1,4 +1,4 @@
-# Mindtaker: A Clean Space for Tour Thoughts
+# Mindtaker: A Clean Space for Your Thoughts, powered by AI
 
 A mobile app for adding your daily thoughts in an organized way. Built for Android and iOS.
 
