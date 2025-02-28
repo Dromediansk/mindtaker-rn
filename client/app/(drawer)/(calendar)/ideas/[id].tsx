@@ -5,13 +5,7 @@ import { useCategoryStore } from "@/store/category.store";
 import { updateIdeaInDb } from "@/utils/queries/idea.query";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useState } from "react";
-import {
-  ScrollView,
-  View,
-  Pressable,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
+import { ScrollView, View, Pressable, Alert } from "react-native";
 
 const DetailScreen = () => {
   const { id, categoryId } = useLocalSearchParams<{
