@@ -47,9 +47,3 @@ venv.bak/
 # android and ios folder
 android/
 ios/
-
-### Python ###
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
