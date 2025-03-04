@@ -81,7 +81,7 @@ const DetailScreen = () => {
         </View>
       ) : (
         <ScrollView className="flex-1 border-2 border-white rounded-lg m-2">
-          <Pressable onPress={() => setIsEditing(true)} className="p-5">
+          <Pressable onPress={() => setIsEditing(true)} className="p-4">
             <StyledText className="text-2xl">{idea.content}</StyledText>
           </Pressable>
         </ScrollView>

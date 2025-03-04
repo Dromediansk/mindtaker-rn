@@ -38,16 +38,18 @@ const AiContent: FC<AiContentProps> = ({ ideaContent }) => {
   };
 
   return (
-    <View>
+    <>
       {aiResponse && (
-        <ScrollView className="m-2 border-2 border-main mb-24 h-80 p-4 bg-gray-100 rounded-lg">
-          <StyledText className="text-xl font-workSans-light">
-            {aiResponse}
-          </StyledText>
-        </ScrollView>
+        <View className="flex-1">
+          <ScrollView className="h-80 bg-gray-100 rounded-lg m-2 border-2 border-main mb-24">
+            <StyledText className="p-5 text-xl font-workSans-light">
+              {aiResponse}
+            </StyledText>
+          </ScrollView>
+        </View>
       )}
-      <AiAvatar onPressOption={handlePressOption} disabled={isLoading} />
-    </View>
+      <AiAvatar onPressOption={handlePressOption} isLoading={isLoading} />
+    </>
   );
 };
 
