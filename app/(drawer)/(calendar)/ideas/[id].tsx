@@ -6,6 +6,7 @@ import { updateIdeaInDb } from "@/utils/queries/idea.query";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useState } from "react";
 import { ScrollView, View, Pressable, Alert } from "react-native";
+import AiContent from "@/components/AiContent";
 
 const DetailScreen = () => {
   const { id, categoryId } = useLocalSearchParams<{
@@ -74,7 +75,7 @@ const DetailScreen = () => {
               text="Save"
               onPress={handleSubmitEdit}
               isLoading={isSubmitting}
-              className="w-2/3"
+              className="w-2/4"
             />
           </View>
         </View>
@@ -85,6 +86,7 @@ const DetailScreen = () => {
           </Pressable>
         </ScrollView>
       )}
+      <AiContent ideaContent={idea.content} />
     </View>
   );
 };

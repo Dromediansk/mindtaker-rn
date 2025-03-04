@@ -10,16 +10,17 @@ import {
 } from "@react-navigation/drawer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SignOutButton from "@/components/SignOutButton";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }} edges={[]}>
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
 
       <SignOutButton />
-    </View>
+    </SafeAreaView>
   );
 };
 
