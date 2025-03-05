@@ -1,8 +1,9 @@
 import { ScrollView, View } from "react-native";
 import React, { FC, useState } from "react";
 import AiAvatar from "./AiAvatar";
-import { HOST } from "@/utils/constants";
+import { API_URL } from "@/utils/constants";
 import { StyledText } from "./StyledText";
+import { AiIdeaAction } from "@/utils/types";
 
 type AiContentProps = {
   ideaContent: string;
@@ -12,10 +13,10 @@ const AiContent: FC<AiContentProps> = ({ ideaContent }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [aiResponse, setAiResponse] = useState("");
 
-  const handlePressOption = async (endpoint: string) => {
+  const handlePressOption = async (action: AiIdeaAction) => {
     try {
       setIsLoading(true);
-      const url = `http://${HOST}:8000/${endpoint}`;
+      const url = `${API_URL}/idea-action`;
 
       const response = await fetch(url, {
         method: "POST",
@@ -25,6 +26,7 @@ const AiContent: FC<AiContentProps> = ({ ideaContent }) => {
         },
         body: JSON.stringify({
           idea_text: ideaContent,
+          action,
         }),
       });
 

@@ -11,3 +11,7 @@ export type CreateIdeaParams = {
   content: string;
   categoryId: Category["id"];
 };
+
+// API types
+
+export type AiIdeaAction = "expand" | "summarize";

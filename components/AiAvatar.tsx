@@ -2,9 +2,10 @@ import { Pressable, Image, View } from "react-native";
 import React, { FC, useRef } from "react";
 import ContextMenu from "react-native-context-menu-view";
 import LottieView from "lottie-react-native";
+import { AiIdeaAction } from "@/utils/types";
 
 type AiAvatarProps = {
-  onPressOption: (endpoint: string) => void;
+  onPressOption: (action: AiIdeaAction) => void;
   isLoading: boolean;
 };
 
@@ -17,9 +18,9 @@ const AiAvatar: FC<AiAvatarProps> = ({ isLoading, onPressOption }) => {
       onPress={(e) => {
         const { name } = e.nativeEvent;
         if (name === "Expand") {
-          onPressOption("expand-idea");
+          onPressOption("expand");
         } else if (name === "Summarize") {
-          onPressOption("summarize-idea");
+          onPressOption("summarize");
         }
       }}
       dropdownMenuMode
