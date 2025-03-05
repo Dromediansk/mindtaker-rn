@@ -25,30 +25,32 @@ const AiAvatar: FC<AiAvatarProps> = ({ isLoading, onPressOption }) => {
       }}
       dropdownMenuMode
     >
-      {isLoading && (
-        <View className="flex-1 items-center justify-center absolute right-6 bottom-6">
-          <LottieView
-            autoPlay
-            ref={animation}
-            loop
-            style={{
-              backgroundColor: "transparent",
-              width: 80,
-              height: 80,
-            }}
-            source={require("../assets/animations/thinking.json")}
+      <View className="relative">
+        {isLoading && (
+          <View className="absolute right-4 bottom-4 z-10">
+            <LottieView
+              autoPlay
+              ref={animation}
+              loop
+              style={{
+                backgroundColor: "transparent",
+                width: 80,
+                height: 80,
+              }}
+              source={require("../assets/animations/thinking.json")}
+            />
+          </View>
+        )}
+        <Pressable
+          className={`${isLoading ? "opacity-75" : ""}`}
+          disabled={isLoading}
+        >
+          <Image
+            source={require("@/assets/images/ai-avatar.png")}
+            className="w-16 h-16 rounded-full"
           />
-        </View>
-      )}
-      <Pressable
-        className={`${isLoading ? "opacity-75" : ""}`}
-        disabled={isLoading}
-      >
-        <Image
-          source={require("@/assets/images/ai-avatar.png")}
-          className="w-16 h-16 rounded-full"
-        />
-      </Pressable>
+        </Pressable>
+      </View>
     </ContextMenu>
   );
 };
