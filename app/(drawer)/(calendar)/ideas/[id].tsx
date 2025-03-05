@@ -7,6 +7,18 @@ import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useState } from "react";
 import { ScrollView, View, Pressable, Alert } from "react-native";
 import AiContent from "@/components/AiContent";
+import AiAvatar from "@/components/AiAvatar";
+import { API_URL } from "@/utils/constants";
+import { AiIdeaAction } from "@/utils/types";
+import { FontAwesome } from "@expo/vector-icons";
+import { cssInterop } from "nativewind";
+
+cssInterop(FontAwesome, {
+  className: {
+    target: "style",
+    nativeStyleToProp: { color: true, fontSize: "size" },
+  },
+});
 
 const DetailScreen = () => {
   const { id, categoryId } = useLocalSearchParams<{
@@ -22,6 +34,9 @@ const DetailScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(idea?.content || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiResponse, setAiResponse] = useState("");
 
   if (!idea) return null;
 
@@ -54,6 +69,32 @@ const DetailScreen = () => {
     }
   };
 
+  const handlePressOption = async (action: AiIdeaAction) => {
+    try {
+      setAiLoading(true);
+      const url = `${API_URL}/idea-action`;
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          idea_text: idea.content,
+          action,
+        }),
+      });
+
+      const data = await response.json();
+      setAiResponse(data.result);
+    } catch (error) {
+      console.error("Error expanding idea:", error);
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
   return (
     <View className="flex-1 bg-white">
       {isEditing ? (
@@ -69,15 +110,6 @@ const DetailScreen = () => {
               editable={!isSubmitting}
             />
           </View>
-
-          <View className="p-4 bg-white border-t border-gray-200 flex items-center">
-            <StyledButton
-              text="Save"
-              onPress={handleSubmitEdit}
-              isLoading={isSubmitting}
-              className="w-2/4"
-            />
-          </View>
         </View>
       ) : (
         <ScrollView className="flex-1 border-2 border-white rounded-lg m-2">
@@ -86,7 +118,20 @@ const DetailScreen = () => {
           </Pressable>
         </ScrollView>
       )}
-      <AiContent ideaContent={idea.content} />
+      <AiContent aiResponse={aiResponse} />
+
+      <View className="p-4 flex flex-row items-center justify-between">
+        <View className="w-16" />
+        <StyledButton
+          text="Save"
+          onPress={handleSubmitEdit}
+          isLoading={isSubmitting}
+          disabled={!isEditing}
+          className="w-1/4"
+          icon={<FontAwesome name="save" className="text-white text-2xl" />}
+        />
+        <AiAvatar onPressOption={handlePressOption} isLoading={aiLoading} />
+      </View>
     </View>
   );
 };

@@ -24,10 +24,9 @@ const AiAvatar: FC<AiAvatarProps> = ({ isLoading, onPressOption }) => {
         }
       }}
       dropdownMenuMode
-      style={{ position: "absolute", bottom: 24, right: 24 }}
     >
       {isLoading && (
-        <View className="flex-1 items-center justify-center absolute -right-10 bottom-6">
+        <View className="flex-1 items-center justify-center absolute right-6 bottom-6">
           <LottieView
             autoPlay
             ref={animation}
