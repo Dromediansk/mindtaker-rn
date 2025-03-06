@@ -12,6 +12,7 @@ import { API_URL } from "@/utils/constants";
 import { AiIdeaAction } from "@/utils/types";
 import { FontAwesome } from "@expo/vector-icons";
 import { cssInterop } from "nativewind";
+import { useAuthStore } from "@/store/auth.store";
 
 cssInterop(FontAwesome, {
   className: {
@@ -26,6 +27,7 @@ const DetailScreen = () => {
     categoryId: string;
   }>();
   const { getIdeasByCategory, setIdeasToCategory } = useCategoryStore();
+  const { session } = useAuthStore();
   const navigation = useNavigation();
 
   const ideas = getIdeasByCategory(categoryId);
@@ -78,7 +80,7 @@ const DetailScreen = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
+          Authorization: `Bearer ${session?.access_token}`,
         },
         body: JSON.stringify({
           idea_text: idea.content,

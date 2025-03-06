@@ -13,7 +13,7 @@ GoogleSignin.configure({
 });
 
 const GoogleSignIn = () => {
-  const { authLoading, setAuthLoading, setUser } = useAuthStore();
+  const { authLoading, setAuthLoading, setUser, setSession } = useAuthStore();
 
   const handleSignIn = async () => {
     try {
@@ -22,23 +22,28 @@ const GoogleSignIn = () => {
       const userInfo = await GoogleSignin.signIn();
 
       if (userInfo.data?.idToken) {
-        const { data, error } = await supabase.auth.signInWithIdToken({
-          provider: "google",
-          token: userInfo.data.idToken,
-        });
+        const { data: userData, error: userError } =
+          await supabase.auth.signInWithIdToken({
+            provider: "google",
+            token: userInfo.data.idToken,
+          });
+        const { data: sessionData, error: errorSession } =
+          await supabase.auth.getSession();
 
-        if (error) {
-          console.error(error);
+        if (userError || errorSession) {
+          console.error(userError || errorSession);
         }
 
-        const user = data?.user;
+        const user = userData?.user;
+        const session = sessionData?.session;
 
-        if (user) {
+        if (user && session) {
           setUser(user);
+          setSession(session);
           router.replace("/");
         }
       } else {
-        throw new Error("no ID token present!");
+        throw new Error("no user or session data found");
       }
     } catch (error: unknown) {
       console.error(error);
