@@ -74,7 +74,7 @@ const DetailScreen = () => {
   const handlePressOption = async (action: AiIdeaAction) => {
     try {
       setAiLoading(true);
-      const url = `${API_URL}/idea-action`;
+      const url = `${API_URL}/ideas/action`;
 
       const response = await fetch(url, {
         method: "POST",
