@@ -62,6 +62,36 @@ export type Database = {
           },
         ]
       }
+      users: {
+        Row: {
+          email: string
+          firstName: string
+          id: string
+          last_signed_at: string | null
+          lastName: string
+          registered_at: string | null
+          uid: string
+        }
+        Insert: {
+          email: string
+          firstName: string
+          id?: string
+          last_signed_at?: string | null
+          lastName: string
+          registered_at?: string | null
+          uid?: string
+        }
+        Update: {
+          email?: string
+          firstName?: string
+          id?: string
+          last_signed_at?: string | null
+          lastName?: string
+          registered_at?: string | null
+          uid?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

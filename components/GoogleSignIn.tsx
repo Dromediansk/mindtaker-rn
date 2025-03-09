@@ -6,6 +6,7 @@ import React from "react";
 import { supabase } from "@/utils/supabase";
 import { router } from "expo-router";
 import { useAuthStore } from "@/store/auth.store";
+import { upsertUserInDb } from "@/utils/queries/user.query";
 
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
@@ -27,18 +28,24 @@ const GoogleSignIn = () => {
             provider: "google",
             token: userInfo.data.idToken,
           });
-        const { data: sessionData, error: errorSession } =
-          await supabase.auth.getSession();
 
-        if (userError || errorSession) {
-          console.error(userError || errorSession);
+        if (userError) {
+          throw new Error(userError.message);
         }
+        const authUser = userData?.user;
 
-        const user = userData?.user;
-        const session = sessionData?.session;
+        if (authUser) {
+          await upsertUserInDb(authUser);
 
-        if (user && session) {
-          setUser(user);
+          const { data: sessionData, error: sessionError } =
+            await supabase.auth.getSession();
+
+          if (sessionError) {
+            throw new Error(sessionError.message);
+          }
+
+          const session = sessionData?.session;
+          setUser(authUser);
           setSession(session);
           router.replace("/");
         }
@@ -46,7 +53,7 @@ const GoogleSignIn = () => {
         throw new Error("no user or session data found");
       }
     } catch (error: unknown) {
-      console.error(error);
+      console.error("Failed to sign in with Google:", error);
     } finally {
       setAuthLoading(false);
     }
