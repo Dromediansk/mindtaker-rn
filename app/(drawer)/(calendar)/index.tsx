@@ -8,11 +8,7 @@ import {
   RefreshControl,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import {
-  CalendarProvider,
-  DateData,
-  ExpandableCalendar,
-} from "react-native-calendars";
+import { CalendarProvider, ExpandableCalendar } from "react-native-calendars";
 import { Link } from "expo-router";
 import { StyledText } from "@/components/StyledText";
 import { useCategoryStore } from "@/store/category.store";
@@ -94,8 +90,6 @@ const IdeasScreen = () => {
     clearCategoryMap,
   } = useCategoryStore();
 
-  const currentWeekMonday = dayjs(selectedDate).day(1);
-
   useEffect(() => {
     const loadInitialData = async () => {
       try {
@@ -112,7 +106,7 @@ const IdeasScreen = () => {
     };
 
     loadInitialData();
-  }, [selectedDate]);
+  }, [clearCategoryMap, selectedDate, setCategoriesToMap]);
 
   const sections = useMemo(() => {
     return Object.values(categoryMap).reduce<Section[]>((acc, category) => {
@@ -130,10 +124,6 @@ const IdeasScreen = () => {
     }, []);
   }, [categoryMap]);
 
-  const handleDateChange = useCallback((date: DateData) => {
-    setSelectedDate(date.dateString);
-  }, []);
-
   const onRefresh = useCallback(async () => {
     setIsRefreshing(true);
     try {
@@ -144,7 +134,7 @@ const IdeasScreen = () => {
     } finally {
       setIsRefreshing(false);
     }
-  }, [selectedDate]);
+  }, [selectedDate, setIdeasToCategory]);
 
   const renderItem = useCallback(
     ({ item }: { item: Idea }) => <IdeaItem item={item} />,
@@ -152,25 +142,12 @@ const IdeasScreen = () => {
   );
 
   return (
-    <CalendarProvider date={selectedDate} showTodayButton>
-      <ExpandableCalendar
-        firstDay={1}
-        allowShadow
-        onDayPress={handleDateChange}
-        onPressArrowLeft={() => {
-          const previousMonday = currentWeekMonday
-            .subtract(7, "day")
-            .format("YYYY-MM-DD");
-          setSelectedDate(previousMonday);
-        }}
-        onPressArrowRight={() => {
-          const nextMonday = currentWeekMonday
-            .add(7, "day")
-            .format("YYYY-MM-DD");
-          setSelectedDate(nextMonday);
-        }}
-        theme={calendarTheme}
-      />
+    <CalendarProvider
+      date={selectedDate}
+      onDateChanged={(date) => setSelectedDate(date)}
+      showTodayButton
+    >
+      <ExpandableCalendar firstDay={1} allowShadow theme={calendarTheme} />
       <View>
         {isLoading ? (
           <ListSkeleton />
