@@ -25,8 +25,6 @@ type Section = {
   data: Idea[];
 };
 
-const initialDate = dayjs().format("YYYY-MM-DD");
-
 cssInterop(ActivityIndicator, {
   className: {
     target: "style",
@@ -80,7 +78,9 @@ const EmptyListComponent = () => (
 );
 
 const IdeasScreen = () => {
-  const [selectedDate, setSelectedDate] = useState(initialDate);
+  const [selectedDate, setSelectedDate] = useState(
+    dayjs().format("YYYY-MM-DD")
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const {
