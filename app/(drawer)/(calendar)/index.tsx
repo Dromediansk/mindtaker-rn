@@ -81,6 +81,7 @@ const IdeasScreen = () => {
   const [selectedDate, setSelectedDate] = useState(
     dayjs().format("YYYY-MM-DD")
   );
+  const [layoutReady, setLayoutReady] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const {
@@ -147,7 +148,11 @@ const IdeasScreen = () => {
       onDateChanged={(date) => setSelectedDate(date)}
       showTodayButton
     >
-      <ExpandableCalendar firstDay={1} allowShadow theme={calendarTheme} />
+      <View onLayout={() => setLayoutReady(true)}>
+        {layoutReady && (
+          <ExpandableCalendar firstDay={1} allowShadow theme={calendarTheme} />
+        )}
+      </View>
       <View>
         {isLoading ? (
           <ListSkeleton />
