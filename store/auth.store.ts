@@ -8,6 +8,7 @@ type AuthStore = {
   authLoading: boolean;
   setUser: (user: User | null) => void;
   setAuthLoading: (loading: boolean) => void;
+  logout: () => void;
 
   session: Session | null;
   setSession: (session: Session | null) => void;
@@ -21,6 +22,8 @@ export const useAuthStore = create<AuthStore>()(
 
       authLoading: false,
       setAuthLoading: (loading) => set({ authLoading: loading }),
+
+      logout: () => set({ user: null, session: null }),
 
       session: null,
       setSession: (session) => set({ session }),

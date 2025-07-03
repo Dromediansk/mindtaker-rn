@@ -12,13 +12,12 @@ cssInterop(MaterialIcons, {
 });
 
 const SignOutButton = () => {
-  const { setUser, setSession } = useAuthStore();
+  const { logout } = useAuthStore();
 
   return (
     <Pressable
       onPress={() => {
-        setSession(null);
-        setUser(null);
+        logout();
       }}
       className="flex-row items-center p-6 ml-2 border-t border-t-gray-200 gap-2"
     >
