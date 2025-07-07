@@ -1,4 +1,4 @@
-import { Category, CategoryWithIdeas, Idea } from "@/utils/types";
+import { CategoryWithIdeas, Idea } from "@/utils/types";
 import { create } from "zustand";
 
 type CategoryMap = Record<string, CategoryWithIdeas>;
@@ -8,9 +8,6 @@ type CategoryStore = {
   setCategoriesToMap: (categories: CategoryWithIdeas[]) => void;
   clearCategoryMap: () => void;
 
-  emptyCategory: Category;
-  setEmptyCategory: (categories: Category[]) => void;
-
   getIdeasByCategory: (categoryId: string) => Idea[];
   setIdeasToCategory: (ideas: Idea[]) => void;
   deleteIdeaFromCategory: (ideaId: string, categoryId: string) => void;
@@ -18,19 +15,9 @@ type CategoryStore = {
 
 export const useCategoryStore = create<CategoryStore>((set, get) => ({
   categoryMap: {},
-  emptyCategory: { id: "", name: "", is_category_none: true },
-  setEmptyCategory: (categories) => {
-    const category = categories.find((category) => category.is_category_none);
-    set({
-      emptyCategory: category || { id: "", name: "", is_category_none: true },
-    });
-  },
   setCategoriesToMap: (categories) => {
     const newMap = {} as CategoryMap;
     categories.forEach((category) => {
-      if (category.is_category_none) {
-        set({ emptyCategory: category });
-      }
       newMap[category.id] = category;
     });
     set({ categoryMap: newMap });

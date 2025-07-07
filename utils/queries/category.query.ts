@@ -17,7 +17,6 @@ export const getCategoriesFromDb = resolveWithAuth(
       .select(
         `id, 
       name,
-      is_category_none, 
       ideas: ideas (id, content, created_at, category_id)`
       )
       .eq("ideas.user_id", user.id)

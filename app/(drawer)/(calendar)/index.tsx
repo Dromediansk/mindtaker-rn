@@ -52,10 +52,7 @@ const renderSectionHeader = ({
   >
     <View className="flex-row items-center justify-between">
       <View className="flex-row items-center gap-2">
-        <Ionicons
-          name={category.is_category_none ? "folder-outline" : "folder"}
-          className="text-white text-2xl"
-        />
+        <Ionicons name="folder" className="text-white text-2xl" />
         <StyledText className="text-xl text-white font-bold shadow-sm">
           {category.name}
         </StyledText>
@@ -116,7 +113,6 @@ const IdeasScreen = () => {
           category: {
             id: category.id,
             name: category.name,
-            is_category_none: category.is_category_none,
           },
           data: category.ideas,
         });

@@ -20,7 +20,7 @@ const IdeaItem = ({ item }: IdeaItemProps) => {
 
   return (
     <Pressable
-      className="bg-white p-4 mx-1 rounded-lg border-2 border-transparent active:border-main active:bg-main/10"
+      className="bg-white p-4 mx-1 rounded-lg active:bg-main/10"
       style={{
         ...Platform.select({
           ios: {
