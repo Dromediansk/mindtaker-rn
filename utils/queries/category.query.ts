@@ -17,6 +17,7 @@ export const getCategoriesFromDb = resolveWithAuth(
       .select(
         `id, 
       name,
+      enum_type,
       ideas: ideas (id, content, created_at, category_id)`
       )
       .eq("ideas.user_id", user.id)

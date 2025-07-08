@@ -1,5 +1,5 @@
 import { View, Alert } from "react-native";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 import StyledTextInput from "@/components/StyledTextInput";
 import { StyledButton } from "@/components/StyledButton";
 import { router } from "expo-router";
@@ -7,6 +7,7 @@ import { Picker } from "@react-native-picker/picker";
 import { useCategoryStore } from "@/store/category.store";
 import { cssInterop } from "nativewind";
 import { createIdeaToDb } from "@/utils/queries";
+import { CategoryEnumType, CategoryMap } from "@/utils/types";
 
 cssInterop(Picker, {
   className: {
@@ -14,12 +15,24 @@ cssInterop(Picker, {
   },
 });
 
+const getDefaultCategoryId = (categoryMap: CategoryMap) => {
+  const defaultCategory = Object.values(categoryMap).find(
+    (category) => category.enum_type === CategoryEnumType.GENERAL
+  );
+  return defaultCategory ? defaultCategory.id : "";
+};
+
 const NewScreen = () => {
   const { categoryMap, setIdeasToCategory, getIdeasByCategory } =
     useCategoryStore();
 
+  const defaultCategoryId = useMemo(
+    () => getDefaultCategoryId(categoryMap),
+    [categoryMap]
+  );
+
   const [content, setContent] = useState("");
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryId, setCategoryId] = useState(defaultCategoryId);
 
   const [isLoading, setIsLoading] = useState(false);
 

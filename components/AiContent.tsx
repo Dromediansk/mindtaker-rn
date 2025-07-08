@@ -10,7 +10,7 @@ const AiContent: FC<AiContentProps> = ({ aiResponse }) => {
   if (!aiResponse) return null;
 
   return (
-    <ScrollView className="max-h-96 bg-gray-100 rounded-lg m-2 border-2 border-main">
+    <ScrollView className="h-80 bg-gray-100 rounded-lg m-2 border-2 border-main">
       <Markdown
         style={{
           body: {

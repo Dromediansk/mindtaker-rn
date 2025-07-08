@@ -113,6 +113,7 @@ const IdeasScreen = () => {
           category: {
             id: category.id,
             name: category.name,
+            enum_type: category.enum_type,
           },
           data: category.ideas,
         });

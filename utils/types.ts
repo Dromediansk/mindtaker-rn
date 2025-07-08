@@ -9,8 +9,16 @@ export type CategoryWithIdeas = Tables<"categories"> & {
 
 export type CreateIdeaParams = {
   content: string;
-  categoryId: Category["id"];
+  categoryId: string;
 };
+
+export type CategoryMap = Record<string, CategoryWithIdeas>;
+
+export enum CategoryEnumType {
+  GENERAL = "GENERAL",
+  PERSONAL = "PERSONAL",
+  BUSINESS = "BUSINESS",
+}
 
 // API types
 

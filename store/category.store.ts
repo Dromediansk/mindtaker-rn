@@ -1,7 +1,5 @@
-import { CategoryWithIdeas, Idea } from "@/utils/types";
+import { CategoryMap, CategoryWithIdeas, Idea } from "@/utils/types";
 import { create } from "zustand";
-
-type CategoryMap = Record<string, CategoryWithIdeas>;
 
 type CategoryStore = {
   categoryMap: CategoryMap;
