@@ -20,6 +20,7 @@ import ListSkeleton from "@/components/ListSkeleton";
 import { LinearGradient } from "expo-linear-gradient";
 import { StyledButton } from "@/components/StyledButton";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Skeleton from "@/components/Skeleton";
 
 type Section = {
   category: Category;
@@ -75,7 +76,7 @@ const IdeasScreen = () => {
     dayjs().format("YYYY-MM-DD")
   );
   const [layoutReady, setLayoutReady] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const { categoryMap, setCategoriesToMap, clearCategoryMap } =
     useCategoryStore();
@@ -83,7 +84,7 @@ const IdeasScreen = () => {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        setIsLoading(true);
+        setIsDataLoading(true);
         clearCategoryMap();
         const categoriesData = await getCategoriesFromDb(selectedDate);
 
@@ -91,7 +92,7 @@ const IdeasScreen = () => {
       } catch (error) {
         console.error("Error loading initial data:", error);
       } finally {
-        setIsLoading(false);
+        setIsDataLoading(false);
       }
     };
 
@@ -131,59 +132,64 @@ const IdeasScreen = () => {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
-      <CalendarProvider
-        date={selectedDate}
-        onDateChanged={(date) => setSelectedDate(date)}
-        showTodayButton
-      >
-        <View onLayout={() => setLayoutReady(true)}>
-          {layoutReady && (
-            <ExpandableCalendar
-              firstDay={1}
-              allowShadow
-              theme={calendarTheme}
-            />
-          )}
-        </View>
-        <View style={{ flex: 1, backgroundColor: "white" }}>
-          {isLoading ? (
+    <SafeAreaView
+      onLayout={() => setLayoutReady(true)}
+      style={{ flex: 1 }}
+      edges={["top"]}
+    >
+      {!layoutReady ? (
+        <>
+          <View className="gap-2 p-2 m-2">
+            <Skeleton height={130} />
             <ListSkeleton />
-          ) : (
-            <SectionList
-              sections={sections}
-              renderItem={renderItem}
-              renderSectionHeader={renderSectionHeader}
-              ListEmptyComponent={EmptyListComponent}
-              keyExtractor={(item) => item.id}
-              stickySectionHeadersEnabled
-              contentContainerClassName="gap-2 pb-56"
-              maxToRenderPerBatch={10}
-              updateCellsBatchingPeriod={50}
-              initialNumToRender={8}
-              windowSize={5}
-              refreshControl={
-                <RefreshControl
-                  refreshing={isRefreshing}
-                  onRefresh={onRefresh}
-                  colors={[COLORS.main]}
-                  tintColor={COLORS.main}
-                />
+          </View>
+        </>
+      ) : (
+        <CalendarProvider
+          date={selectedDate}
+          onDateChanged={(date) => setSelectedDate(date)}
+          showTodayButton
+        >
+          <ExpandableCalendar firstDay={1} allowShadow theme={calendarTheme} />
+          <View style={{ flex: 1, backgroundColor: "white" }}>
+            {isDataLoading ? (
+              <ListSkeleton />
+            ) : (
+              <SectionList
+                sections={sections}
+                renderItem={renderItem}
+                renderSectionHeader={renderSectionHeader}
+                ListEmptyComponent={EmptyListComponent}
+                keyExtractor={(item) => item.id}
+                stickySectionHeadersEnabled
+                contentContainerClassName="gap-2 pb-56"
+                maxToRenderPerBatch={10}
+                updateCellsBatchingPeriod={50}
+                initialNumToRender={8}
+                windowSize={5}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={isRefreshing}
+                    onRefresh={onRefresh}
+                    colors={[COLORS.main]}
+                    tintColor={COLORS.main}
+                  />
+                }
+              />
+            )}
+          </View>
+
+          <Link asChild href="/ideas/new">
+            <StyledButton
+              text="new"
+              className="w-40 absolute bottom-6 left-1/2 -translate-x-1/2"
+              icon={
+                <Ionicons name="bulb-outline" className="text-white text-2xl" />
               }
             />
-          )}
-        </View>
-
-        <Link asChild href="/ideas/new">
-          <StyledButton
-            text="new"
-            className="w-40 absolute bottom-6 left-1/2 -translate-x-1/2"
-            icon={
-              <Ionicons name="bulb-outline" className="text-white text-2xl" />
-            }
-          />
-        </Link>
-      </CalendarProvider>
+          </Link>
+        </CalendarProvider>
+      )}
     </SafeAreaView>
   );
 };
