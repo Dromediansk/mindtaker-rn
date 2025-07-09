@@ -10,7 +10,7 @@ export default function ProfileScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
       <ScrollView className="flex-1 bg-white">
-        <View className="items-center p-6 bg-gray-50">
+        <View className="items-center p-6 bg-gray-100">
           {user?.user_metadata.picture ? (
             <Image
               source={{ uri: user.user_metadata.picture }}
@@ -46,8 +46,6 @@ export default function ProfileScreen() {
         </View>
 
         <View className="p-6">
-          <Text className="text-lg font-semibold mb-4">Account Settings</Text>
-
           <View className="bg-white rounded-lg shadow-sm border border-gray-100">
             <SignOutButton />
           </View>

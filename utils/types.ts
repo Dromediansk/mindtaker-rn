@@ -18,6 +18,7 @@ export enum CategoryEnumType {
   GENERAL = "GENERAL",
   PERSONAL = "PERSONAL",
   BUSINESS = "BUSINESS",
+  HEALTH = "HEALTH",
 }
 
 // API types

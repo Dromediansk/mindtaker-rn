@@ -16,9 +16,7 @@ const SignOutButton = () => {
 
   return (
     <Pressable
-      onPress={() => {
-        logout();
-      }}
+      onPress={logout}
       className="flex-row items-center p-6 ml-2 border-t border-t-gray-200 gap-2"
     >
       <MaterialIcons name="logout" className="text-red-600 text-3xl" />
