@@ -4,13 +4,14 @@ export default function IdeasLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: false,
         presentation: "modal",
+        headerShown: false,
       }}
     >
       <Stack.Screen
         name="ideas/new"
         options={{
+          headerShown: true,
           title: "New Idea",
           headerBackTitle: "Back",
         }}
@@ -18,7 +19,8 @@ export default function IdeasLayout() {
       <Stack.Screen
         name="ideas/[id]"
         options={{
-          title: "Edit Idea",
+          headerShown: true,
+          headerTitle: "",
           headerBackTitle: "Back",
         }}
       />
