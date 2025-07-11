@@ -1,5 +1,5 @@
 import { Redirect, Tabs } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { View, ActivityIndicator } from "react-native";
 import { useAuthStore } from "@/store/auth.store";
 import { COLORS } from "@/utils/theme";
@@ -32,7 +32,11 @@ export default function TabsLayout() {
         name="(home)"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="lightbulb-on"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />

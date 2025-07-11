@@ -102,7 +102,6 @@ const IdeasScreen = () => {
   const onRefresh = useCallback(async () => {
     setIsRefreshing(true);
     try {
-      clearCategoryMap();
       const categoriesData = await getCategoriesFromDb(selectedDate);
       setCategoriesToMap(categoriesData);
     } catch (error) {
@@ -110,7 +109,7 @@ const IdeasScreen = () => {
     } finally {
       setIsRefreshing(false);
     }
-  }, [clearCategoryMap, selectedDate, setCategoriesToMap]);
+  }, [selectedDate, setCategoriesToMap]);
 
   const sections = useMemo(() => {
     return Object.values(categoryMap)
